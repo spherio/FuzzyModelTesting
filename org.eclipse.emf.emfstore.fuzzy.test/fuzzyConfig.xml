@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="ASCII"?>
+<org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config:TestConfig xmlns:org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config="http://org/eclipse/emf/emfstore/fuzzy/emfdataprovider/config" seed="1" nsURI="http://org/eclipse/example/bowling" count="5" testClass="org.eclipse.emf.emfstore.fuzzy.test.MyTest"/>
