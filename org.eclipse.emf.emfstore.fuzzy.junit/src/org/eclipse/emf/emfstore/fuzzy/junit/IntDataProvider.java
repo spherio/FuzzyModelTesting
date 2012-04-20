@@ -1,7 +1,9 @@
 package org.eclipse.emf.emfstore.fuzzy.junit;
 
+import java.util.List;
 import java.util.Random;
 
+import org.junit.runner.notification.RunListener;
 import org.junit.runners.model.TestClass;
 
 /**
@@ -34,6 +36,11 @@ public class IntDataProvider implements FuzzyDataProvider<Integer> {
 	@Override
 	public void setTestClass(TestClass testClass) {
 		hash = testClass.hashCode();
+	}
+
+	@Override
+	public List<RunListener> getListener() {
+		return null;
 	}
 
 }

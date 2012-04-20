@@ -1,5 +1,8 @@
 package org.eclipse.emf.emfstore.fuzzy.junit;
 
+import java.util.List;
+
+import org.junit.runner.notification.RunListener;
 import org.junit.runners.model.TestClass;
 
 
@@ -38,4 +41,9 @@ public interface FuzzyDataProvider<T> {
 	 * @param testClass The {@link TestClass} of the calling {@link FuzzyRunner}.
 	 */
 	public void setTestClass(TestClass testClass);
+	
+	/**
+	 * @return A list of listeners to add to the runner, e.g. to get information about errors. <code>null</code> permitted.
+	 */
+	public List<RunListener> getListener();
 }

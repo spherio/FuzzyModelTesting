@@ -1,6 +1,8 @@
 package org.eclipse.emf.emfstore.fuzzy.emfdataprovider;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import org.eclipse.emf.common.command.BasicCommandStack;
@@ -10,11 +12,14 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.emfstore.client.model.ProjectSpace;
+import org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.ConfigFactory;
 import org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.TestConfig;
+import org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.TestRun;
 import org.eclipse.emf.emfstore.fuzzy.junit.FuzzyDataProvider;
 import org.eclipse.emf.emfstore.modelmutator.api.ModelMutator;
 import org.eclipse.emf.emfstore.modelmutator.api.ModelMutatorConfiguration;
 import org.eclipse.emf.emfstore.modelmutator.api.ModelMutatorUtil;
+import org.junit.runner.notification.RunListener;
 import org.junit.runners.model.TestClass;
 
 public class EMFDataProvider implements FuzzyDataProvider<EObject> {
@@ -26,16 +31,19 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 	private int count;
 	
 	private TestClass testClass;
+
+	private TestRun testRun;
 	
 	public static final String FILE_PATH = "fuzzyConfig.xml";
 	
-	public static final Resource resource = new AdapterFactoryEditingDomain(new ComposedAdapterFactory(
-			ComposedAdapterFactory.Descriptor.Registry.INSTANCE), new BasicCommandStack()).createResource(FILE_PATH);
+	private Resource resource;
 		
 	@Override
 	public void init(){
 				
-		// load config from file		
+		// load config from file			
+		resource = new AdapterFactoryEditingDomain(new ComposedAdapterFactory(
+					ComposedAdapterFactory.Descriptor.Registry.INSTANCE), new BasicCommandStack()).createResource(FILE_PATH);
 		try {			
 			resource.load(null);			
 		} catch (IOException e) {
@@ -53,6 +61,10 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 		if(ePackage == null){
 			throw new IllegalArgumentException("Wrong configuration: Could not find the EPackage with the nsURI : " + config.getNsURI());
 		}
+		
+		// create new TestRun with config
+		testRun = ConfigFactory.eINSTANCE.createTestRun();
+		testRun.setConfig(config);
 	}
 	
 	@Override
@@ -79,6 +91,25 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 		this.testClass = testClass;
 	}
 	
+	@Override
+	public List<RunListener> getListener() {
+		return Arrays.asList(
+				new RunListener[]{new EMFRunListener(this, testRun)});
+	}
+	
+	public void addContentToResource(EObject object){
+		resource.getContents().add(object);
+	}
+	
+	public void finish(){
+		resource.getContents().add(testRun);
+		try {
+			resource.save(null);
+		} catch (IOException e) {
+			throw new RuntimeException("Could not save the config after running!", e);
+		}
+	}
+	
 	private TestConfig getTestConfig(Resource resource){
 		// TODO modify/check to be more robust against wrong input
 		// TODO add a standard TestConfig? e.g. where clazz = null / or testconfig for complete packages
@@ -103,4 +134,5 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 		projectSpace.setProjectDescription("Project created by EMFDataProvider");	
 		return projectSpace;
 	}
+
 }

@@ -10,6 +10,8 @@ import org.eclipse.emf.emfstore.fuzzy.junit.Annotations.Data;
 import org.eclipse.emf.emfstore.fuzzy.junit.Annotations.DataProvider;
 import org.junit.runner.RunWith;
 import org.junit.runner.Runner;
+import org.junit.runner.notification.RunListener;
+import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.Suite;
 import org.junit.runners.model.FrameworkField;
 
@@ -58,6 +60,23 @@ public class FuzzyRunner extends Suite {
 		for (int i = 0; i < dataProvider.size(); i++) {
 			runners.add(new FuzzyTestClassRunner(clazz, dataProvider, dataField, i));
 		}
+	}
+	
+	/*
+	 * Override to add RunListeners of the FuzzyDataProvider 
+	 * 
+	 * (non-Javadoc)
+	 * @see org.junit.runners.ParentRunner#run(org.junit.runner.notification.RunNotifier)
+	 */
+	@Override
+	public void run(final RunNotifier notifier) {
+		List<RunListener> listener = dataProvider.getListener();
+		if(listener != null){
+			for(RunListener runListener : listener){
+				notifier.addListener(runListener);
+			}
+		}		
+		super.run(notifier);
 	}
 	
 	/**
@@ -111,8 +130,7 @@ public class FuzzyRunner extends Suite {
 						
 		// create a new instance of the DataProvider
 		try{
-			FuzzyDataProvider<?> dataProvider = (FuzzyDataProvider<?>) dataProviderClass.getConstructor().newInstance();
-			return dataProvider;
+			return (FuzzyDataProvider<?>) dataProviderClass.getConstructor().newInstance();
 		} catch (NoSuchMethodException e){
 			throw new NoSuchMethodException("The DataProvider must have a zero-parameter constructor!");
 		}
