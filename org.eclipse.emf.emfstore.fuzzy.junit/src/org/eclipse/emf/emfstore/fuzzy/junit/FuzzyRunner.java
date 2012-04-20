@@ -26,7 +26,7 @@ import org.junit.runners.model.Statement;
  * Activate with the {@link RunWith} annotation: <code>@RunWith(FuzzyRunner.class)</code>.
  * <br/>
  * <br/>
- * The test class has to have a field, which is not static and which is annotated with {@link Data}, e.g.<br/>
+ * The test class must have a field, which is not static and annotated with {@link Data}, e.g.<br/>
  * <br/>
  * <code>@Data<br/>private Integer i;</code>
  * <br/>
@@ -35,7 +35,7 @@ import org.junit.runners.model.Statement;
  * <br/>
  * <code>@DataProvider(IntDataProvider.class)</code><br/>
  * <br/>
- * This class has to implement the interface {@link FuzzyDataProvider}. The default value is the example implementation: {@link IntDataProvider}.<br/>
+ * This class must implement the interface {@link FuzzyDataProvider}. The default value is the example implementation: {@link IntDataProvider}.<br/>
  * <br/>
  * The {@link MyTest} class illustrates an example usage of the {@link FuzzyRunner}.
  * 
@@ -68,7 +68,7 @@ public class FuzzyRunner extends Suite {
 	
 	/**
 	 * @return The field annotated with {@link Data}.
-	 * @throws Exception If there is no fitting field.
+	 * @throws Exception If there is not exact one fitting field.
 	 */
 	private FrameworkField getModelField() throws Exception {
 		List<FrameworkField> fields = getTestClass().getAnnotatedFields(Data.class);
@@ -92,7 +92,6 @@ public class FuzzyRunner extends Suite {
 	}
 	
 	/**
-	 * 
 	 * @return The {@link FuzzyDataProvider} defined by the {@link DataProvider} annotation or the default one.
 	 * @throws NoSuchMethodException If there is no zero parameter constructor.
 	 * @throws Exception If the data provider does not implement the {@link FuzzyDataProvider} interface.
@@ -121,7 +120,7 @@ public class FuzzyRunner extends Suite {
 			FuzzyDataProvider<?> dataProvider = (FuzzyDataProvider<?>) dataProviderClass.getConstructor().newInstance();
 			return dataProvider;
 		} catch (NoSuchMethodException e){
-			throw new NoSuchMethodException("The DataProvider has no zero parameter constructor!");
+			throw new NoSuchMethodException("The DataProvider must have a zero-parameter constructor!");
 		}
 	}
 	
@@ -172,7 +171,7 @@ public class FuzzyRunner extends Suite {
 
 		@Override
 		protected String testName(final FrameworkMethod method) {
-			return String.format("%s[%s]", method.getName(), counter);
+			return String.format("%s [%s]", method.getName(), counter);
 		}
 
 		@Override

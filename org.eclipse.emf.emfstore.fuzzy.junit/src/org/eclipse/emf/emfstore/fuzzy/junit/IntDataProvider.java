@@ -14,7 +14,7 @@ public class IntDataProvider implements FuzzyDataProvider<Integer> {
 	
 	private Random random;
 	
-	private TestClass testClass;
+	private int hash;
 
 	@Override
 	public void init() {	
@@ -23,7 +23,7 @@ public class IntDataProvider implements FuzzyDataProvider<Integer> {
 		
 	@Override
 	public Integer next() {
-		return random.nextInt(testClass.hashCode());
+		return random.nextInt(hash);
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class IntDataProvider implements FuzzyDataProvider<Integer> {
 
 	@Override
 	public void setTestClass(TestClass testClass) {
-		this.testClass = testClass;
+		hash = testClass.hashCode();
 	}
 
 }

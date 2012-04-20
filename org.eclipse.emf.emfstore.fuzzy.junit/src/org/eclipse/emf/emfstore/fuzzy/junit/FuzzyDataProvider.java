@@ -5,7 +5,7 @@ import org.junit.runners.model.TestClass;
 
 /**
  * A Data Provider for the JUnit Runner: {@link FuzzyRunner}.<br><br>
- * An implementation of it has to have a zero-parameter constructor.
+ * An implementation of it must have a zero-parameter constructor.
  * 
  * @author Julian Sommerfeldt
  *
@@ -16,7 +16,7 @@ public interface FuzzyDataProvider<T> {
 	/**
 	 * Creates and returns the data for the next run.<br><br>
 	 * Note that it is strongly recommended to instantiate the data
-	 * in this method for every call and not in the instantiation of the class, e.g. the constructor.,
+	 * in this method for every call and not in the instantiation of the class, e.g. the init method,
 	 * to avoid overloading the memory. 
 	 * 
 	 * @return The data for the next run of the test class.

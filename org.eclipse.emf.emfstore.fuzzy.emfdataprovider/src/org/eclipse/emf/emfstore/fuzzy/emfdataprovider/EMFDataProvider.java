@@ -27,7 +27,7 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 	private TestClass testClass;
 	
 	public static final String FILE_PATH = "fuzzyConfig.xml";
-	
+		
 	@Override
 	public void init(){
 				
@@ -82,10 +82,10 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 		// TODO add a standard TestConfig? e.g. where clazz = null / or testconfig for complete packages
 		for(EObject object : resource.getContents()){
 			if(object instanceof TestConfig){
-				TestConfig dataProvider = (TestConfig) object;
-				Class<?> clazz = dataProvider.getTestClass();
+				TestConfig config = (TestConfig) object;
+				Class<?> clazz = config.getTestClass();
 				if(clazz.getName().equals(testClass.getJavaClass().getName())){
-					return dataProvider;
+					return config;
 				}
 			}
 		}
