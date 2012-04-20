@@ -22,11 +22,18 @@ public class ConfigCreation {
 		config.setCount(5);
 		config.setTestClass(MyTest.class);
 		
+		TestConfig config2 = ConfigFactory.eINSTANCE.createTestConfig();
+		config2.setNsURI(MODEL);
+		config2.setSeed(10);
+		config2.setCount(90);
+		config2.setTestClass(ConfigCreation.class);
+		
 		URI fileURI = URI.createFileURI(EMFDataProvider.FILE_PATH);
-		Resource poResource = new XMLResourceFactoryImpl().createResource(fileURI);
-		poResource.getContents().add(config);
+		Resource resource = new XMLResourceFactoryImpl().createResource(fileURI);
+		resource.getContents().add(config);
+		resource.getContents().add(config2);
 		try {
-			poResource.save(null);
+			resource.save(null);
 			System.out.println("saved");
 		} catch (IOException e) {
 			e.printStackTrace();
