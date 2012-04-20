@@ -1,7 +1,6 @@
 package org.eclipse.emf.emfstore.fuzzy.junit;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,13 +10,8 @@ import org.eclipse.emf.emfstore.fuzzy.junit.Annotations.Data;
 import org.eclipse.emf.emfstore.fuzzy.junit.Annotations.DataProvider;
 import org.junit.runner.RunWith;
 import org.junit.runner.Runner;
-import org.junit.runner.notification.RunNotifier;
-import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.Suite;
 import org.junit.runners.model.FrameworkField;
-import org.junit.runners.model.FrameworkMethod;
-import org.junit.runners.model.InitializationError;
-import org.junit.runners.model.Statement;
 
 /**
  * A {@link Runner} for JUnit, to realize multiple runs with different values for a data field.
@@ -62,7 +56,7 @@ public class FuzzyRunner extends Suite {
 		dataProvider.init();
 		dataField = getModelField();	
 		for (int i = 0; i < dataProvider.size(); i++) {
-			runners.add(new FuzzyTestClassRunner(clazz, i));
+			runners.add(new FuzzyTestClassRunner(clazz, dataProvider, dataField, i));
 		}
 	}
 	
@@ -128,55 +122,4 @@ public class FuzzyRunner extends Suite {
 	protected List<Runner> getChildren() {
 		return runners;
 	}
-	
-	/**
-	 * Inner class representing the runner for one run of the test class.
-	 * 
-	 * @author Julian Sommerfeldt
-	 *
-	 */
-	private class FuzzyTestClassRunner extends BlockJUnit4ClassRunner {
-		
-		/**
-		 * Which run is it?
-		 */
-		private int counter;
-		
-		FuzzyTestClassRunner(Class<?> type, int counter) throws InitializationError {
-			super(type);
-			this.counter = counter;
-		}
-
-		@Override
-		public Object createTest() throws Exception {
-			Object testInstance = getTestClass().getOnlyConstructor().newInstance();
-			Field field = dataField.getField();
-			field.setAccessible(true);
-			try{
-				field.set(testInstance, dataProvider.next());
-			}catch (IllegalArgumentException e){
-				throw new IllegalArgumentException(
-						"The field anntoted with " + Data.class.getSimpleName() + 
-						" does not fit to the type of the dataprovider (" + dataProvider.getClass() + ").", e);
-			} finally {
-				field.setAccessible(false);
-			}
-			return testInstance;
-		}
-
-		@Override
-		protected String getName() {
-			return String.format("[%s]", counter);
-		}
-
-		@Override
-		protected String testName(final FrameworkMethod method) {
-			return String.format("%s [%s]", method.getName(), counter);
-		}
-
-		@Override
-		protected Statement classBlock(RunNotifier notifier) {
-			return childrenInvoker(notifier);
-		}
-	}	
 }
