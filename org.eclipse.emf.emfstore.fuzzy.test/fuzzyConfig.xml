@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="ASCII"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config="http://org/eclipse/emf/emfstore/fuzzy/emfdataprovider/config">
-  <org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config:TestConfig seed="1" nsURI="http://org/eclipse/example/bowling" count="5" testClass="org.eclipse.emf.emfstore.fuzzy.test.MyTest"/>
-  <org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config:TestConfig seed="10" nsURI="http://org/eclipse/example/bowling" count="90" testClass="org.eclipse.emf.emfstore.fuzzy.test.ConfigCreation"/>
+  <org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config:TestConfig seed="1" nsURI="http://org/eclipse/example/bowling" count="2" testClass="org.eclipse.emf.emfstore.fuzzy.test.MyTest"/>
+  <org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config:TestRun config="/0" results="/2 /3"/>
+  <org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config:TestResult seedCount="1" testName="test [1]" executionTime="3413"/>
+  <org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config:TestResult seedCount="2" testName="test [2]" executionTime="78"/>
 </xmi:XMI>

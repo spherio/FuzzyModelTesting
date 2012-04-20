@@ -58,7 +58,7 @@ public class FuzzyRunner extends Suite {
 		dataProvider.init();
 		dataField = getModelField();	
 		for (int i = 0; i < dataProvider.size(); i++) {
-			runners.add(new FuzzyTestClassRunner(clazz, dataProvider, dataField, i));
+			runners.add(new FuzzyTestClassRunner(clazz, dataProvider, dataField, i + 1));
 		}
 	}
 	
