@@ -7,7 +7,6 @@ import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkField;
-import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 import org.junit.runners.model.TestClass;
@@ -63,11 +62,6 @@ public class FuzzyTestClassRunner extends BlockJUnit4ClassRunner {
 	@Override
 	protected String getName() {
 		return String.format("[%s]", counter);
-	}
-
-	@Override
-	protected String testName(final FrameworkMethod method) {
-		return String.format("%s [%s]", method.getName(), counter);
 	}
 
 	@Override
