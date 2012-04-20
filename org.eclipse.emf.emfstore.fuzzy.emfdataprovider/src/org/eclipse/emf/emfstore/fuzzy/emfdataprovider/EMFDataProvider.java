@@ -3,11 +3,12 @@ package org.eclipse.emf.emfstore.fuzzy.emfdataprovider;
 import java.io.IOException;
 import java.util.Random;
 
-import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.emfstore.client.model.ProjectSpace;
 import org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.TestConfig;
 import org.eclipse.emf.emfstore.fuzzy.junit.FuzzyDataProvider;
@@ -27,13 +28,14 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 	private TestClass testClass;
 	
 	public static final String FILE_PATH = "fuzzyConfig.xml";
+	
+	public static final Resource resource = new AdapterFactoryEditingDomain(new ComposedAdapterFactory(
+			ComposedAdapterFactory.Descriptor.Registry.INSTANCE), new BasicCommandStack()).createResource(FILE_PATH);
 		
 	@Override
 	public void init(){
 				
-		// load config from file
-		URI fileURI = URI.createFileURI(FILE_PATH);
-		Resource resource = new XMLResourceFactoryImpl().createResource(fileURI);
+		// load config from file		
 		try {			
 			resource.load(null);			
 		} catch (IOException e) {
