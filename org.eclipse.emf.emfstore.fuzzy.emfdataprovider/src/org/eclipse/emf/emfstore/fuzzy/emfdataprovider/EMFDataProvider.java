@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.eclipse.emf.common.command.BasicCommandStack;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -14,6 +15,7 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.emfstore.client.model.ProjectSpace;
 import org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.ConfigFactory;
 import org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.TestConfig;
+import org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.TestResult;
 import org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.TestRun;
 import org.eclipse.emf.emfstore.fuzzy.junit.FuzzyDataProvider;
 import org.eclipse.emf.emfstore.modelmutator.api.ModelMutator;
@@ -29,6 +31,8 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 	private EPackage ePackage;
 	
 	private int count;
+	
+	private int seedCount;
 	
 	private TestClass testClass;
 
@@ -56,6 +60,7 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 		// init variables
 		random = new Random(config.getSeed());
 		count = config.getCount();
+		seedCount = 0;
 
 		ePackage = ModelMutatorUtil.getEPackage(config.getNsURI());
 		if(ePackage == null){
@@ -68,7 +73,7 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 	}
 	
 	@Override
-	public EObject next() {
+	public EObject next() {		
 		ProjectSpace projectSpace = createProjectSpace();
 		
 		// create a new configuration for the next model
@@ -77,6 +82,8 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 		
 		// generate the model
 		ModelMutator.generateModel(mmc);
+		
+		seedCount++;
 			
 		return projectSpace;	
 	}
@@ -97,17 +104,27 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 				new RunListener[]{new EMFRunListener(this, testRun)});
 	}
 	
-	public void addContentToResource(EObject object){
-		resource.getContents().add(object);
-	}
-	
+	@SuppressWarnings("unchecked")
 	public void finish(){
-		resource.getContents().add(testRun);
+		// add testrun
+		EList<EObject> contents = resource.getContents();
+		contents.add(testRun);
+		
+		// add testresults of testrun
+		EList<TestResult> results = testRun.getResults();
+		for(TestResult result : results){
+			contents.add(result);
+		}
+		
 		try {
 			resource.save(null);
 		} catch (IOException e) {
 			throw new RuntimeException("Could not save the config after running!", e);
 		}
+	}
+	
+	public int getCurrentSeedCount(){
+		return seedCount;
 	}
 	
 	private TestConfig getTestConfig(Resource resource){

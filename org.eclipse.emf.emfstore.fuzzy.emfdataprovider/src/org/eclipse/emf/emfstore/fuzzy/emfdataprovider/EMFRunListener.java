@@ -22,6 +22,8 @@ public class EMFRunListener extends RunListener {
 	
 	private TestResult testResult;
 	
+	private long testStartTime;
+	
 	public EMFRunListener(EMFDataProvider dataProvider, TestRun testRun){
 		this.dataProvider = dataProvider;
 		this.testRun = testRun;
@@ -37,13 +39,15 @@ public class EMFRunListener extends RunListener {
 	
 	public void testStarted(Description description) throws Exception {
 		testResult = ConfigFactory.eINSTANCE.createTestResult();
-		testResult.setTestName(description.getMethodName());
+		testResult.setTestName(description.getMethodName());		
+		testStartTime = System.currentTimeMillis();
 	}
 
 	@SuppressWarnings("unchecked")
 	public void testFinished(Description description) throws Exception {
+		testResult.setExecutionTime(System.currentTimeMillis() - testStartTime);
+		testResult.setSeedCount(dataProvider.getCurrentSeedCount());
 		testRun.getResults().add(testResult);	
-		dataProvider.addContentToResource(testResult);
 	}
 
 	public void testFailure(Failure failure) throws Exception {
