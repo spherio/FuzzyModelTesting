@@ -60,6 +60,8 @@ public class ConfigFactoryImpl extends EFactoryImpl implements ConfigFactory {
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case ConfigPackage.TEST_CONFIG: return createTestConfig();
+			case ConfigPackage.TEST_RUN: return createTestRun();
+			case ConfigPackage.TEST_RESULT: return createTestResult();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -73,6 +75,26 @@ public class ConfigFactoryImpl extends EFactoryImpl implements ConfigFactory {
 	public TestConfig createTestConfig() {
 		TestConfigImpl testConfig = new TestConfigImpl();
 		return testConfig;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public TestRun createTestRun() {
+		TestRunImpl testRun = new TestRunImpl();
+		return testRun;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public TestResult createTestResult() {
+		TestResultImpl testResult = new TestResultImpl();
+		return testResult;
 	}
 
 	/**

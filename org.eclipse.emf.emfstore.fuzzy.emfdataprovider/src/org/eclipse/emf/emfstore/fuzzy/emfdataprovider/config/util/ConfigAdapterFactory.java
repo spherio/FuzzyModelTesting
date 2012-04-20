@@ -73,6 +73,12 @@ public class ConfigAdapterFactory extends AdapterFactoryImpl {
 			public Object caseTestConfig(TestConfig object) {
 				return createTestConfigAdapter();
 			}
+			public Object caseTestRun(TestRun object) {
+				return createTestRunAdapter();
+			}
+			public Object caseTestResult(TestResult object) {
+				return createTestResultAdapter();
+			}
 			public Object defaultCase(EObject object) {
 				return createEObjectAdapter();
 			}
@@ -102,6 +108,34 @@ public class ConfigAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createTestConfigAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.TestRun <em>Test Run</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.TestRun
+	 * @generated
+	 */
+	public Adapter createTestRunAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.TestResult <em>Test Result</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.TestResult
+	 * @generated
+	 */
+	public Adapter createTestResultAdapter() {
 		return null;
 	}
 

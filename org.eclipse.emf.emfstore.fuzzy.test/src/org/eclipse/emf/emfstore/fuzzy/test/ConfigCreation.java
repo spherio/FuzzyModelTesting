@@ -2,6 +2,10 @@ package org.eclipse.emf.emfstore.fuzzy.test;
 
 import java.io.IOException;
 
+import org.eclipse.emf.common.command.BasicCommandStack;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.emfstore.fuzzy.emfdataprovider.EMFDataProvider;
 import org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.ConfigFactory;
 import org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.TestConfig;
@@ -24,12 +28,15 @@ public class ConfigCreation {
 		config2.setSeed(10);
 		config2.setCount(90);
 		config2.setTestClass(ConfigCreation.class);
+		
+		Resource resource = new AdapterFactoryEditingDomain(new ComposedAdapterFactory(
+				ComposedAdapterFactory.Descriptor.Registry.INSTANCE), new BasicCommandStack()).createResource(EMFDataProvider.FILE_PATH);
 				
-		EMFDataProvider.resource.getContents().add(config);
-		EMFDataProvider.resource.getContents().add(config2);
+		resource.getContents().add(config);
+		resource.getContents().add(config2);
 		
 		try {
-			EMFDataProvider.resource.save(null);
+			resource.save(null);
 			System.out.println("saved");
 		} catch (IOException e) {
 			e.printStackTrace();

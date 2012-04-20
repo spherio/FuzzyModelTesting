@@ -35,6 +35,24 @@ public interface ConfigFactory extends EFactory {
 	TestConfig createTestConfig();
 
 	/**
+	 * Returns a new object of class '<em>Test Run</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Test Run</em>'.
+	 * @generated
+	 */
+	TestRun createTestRun();
+
+	/**
+	 * Returns a new object of class '<em>Test Result</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Test Result</em>'.
+	 * @generated
+	 */
+	TestResult createTestResult();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
