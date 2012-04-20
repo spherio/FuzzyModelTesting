@@ -7,6 +7,7 @@ import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkField;
+import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 import org.junit.runners.model.TestClass;
@@ -35,6 +36,8 @@ public class FuzzyTestClassRunner extends BlockJUnit4ClassRunner {
 	 */
 	private FrameworkField dataField;
 	
+	private Object data;
+		
 	FuzzyTestClassRunner(Class<?> type, FuzzyDataProvider<?> dataProvider, FrameworkField dataField, int counter) throws InitializationError {
 		super(type);
 		this.counter = counter;
@@ -44,11 +47,15 @@ public class FuzzyTestClassRunner extends BlockJUnit4ClassRunner {
 
 	@Override
 	public Object createTest() throws Exception {
+		if(data == null){
+			data = dataProvider.next();
+		}
+				
 		Object testInstance = getTestClass().getOnlyConstructor().newInstance();
 		Field field = dataField.getField();
 		field.setAccessible(true);
 		try{
-			field.set(testInstance, dataProvider.next());
+			field.set(testInstance, data);
 		}catch (IllegalArgumentException e){
 			throw new IllegalArgumentException(
 					"The field anntoted with " + Data.class.getSimpleName() + 
@@ -57,6 +64,11 @@ public class FuzzyTestClassRunner extends BlockJUnit4ClassRunner {
 			field.setAccessible(false);
 		}
 		return testInstance;
+	}
+	
+	@Override
+	protected String testName(final FrameworkMethod method) {
+		return String.format("%s [%s]", method.getName(), counter);
 	}
 
 	@Override
