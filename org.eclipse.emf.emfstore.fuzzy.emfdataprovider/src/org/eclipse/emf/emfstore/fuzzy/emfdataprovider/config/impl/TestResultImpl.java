@@ -122,7 +122,7 @@ public class TestResultImpl extends EObjectImpl implements TestResult {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final double EXECUTION_TIME_EDEFAULT = 0.0;
+	protected static final long EXECUTION_TIME_EDEFAULT = 0L;
 
 	/**
 	 * The cached value of the '{@link #getExecutionTime() <em>Execution Time</em>}' attribute.
@@ -132,7 +132,7 @@ public class TestResultImpl extends EObjectImpl implements TestResult {
 	 * @generated
 	 * @ordered
 	 */
-	protected double executionTime = EXECUTION_TIME_EDEFAULT;
+	protected long executionTime = EXECUTION_TIME_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -241,7 +241,7 @@ public class TestResultImpl extends EObjectImpl implements TestResult {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public double getExecutionTime() {
+	public long getExecutionTime() {
 		return executionTime;
 	}
 
@@ -250,8 +250,8 @@ public class TestResultImpl extends EObjectImpl implements TestResult {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setExecutionTime(double newExecutionTime) {
-		double oldExecutionTime = executionTime;
+	public void setExecutionTime(long newExecutionTime) {
+		long oldExecutionTime = executionTime;
 		executionTime = newExecutionTime;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ConfigPackage.TEST_RESULT__EXECUTION_TIME, oldExecutionTime, executionTime));
@@ -273,7 +273,7 @@ public class TestResultImpl extends EObjectImpl implements TestResult {
 			case ConfigPackage.TEST_RESULT__FAILURE:
 				return getFailure();
 			case ConfigPackage.TEST_RESULT__EXECUTION_TIME:
-				return new Double(getExecutionTime());
+				return new Long(getExecutionTime());
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -298,7 +298,7 @@ public class TestResultImpl extends EObjectImpl implements TestResult {
 				setFailure((String)newValue);
 				return;
 			case ConfigPackage.TEST_RESULT__EXECUTION_TIME:
-				setExecutionTime(((Double)newValue).doubleValue());
+				setExecutionTime(((Long)newValue).longValue());
 				return;
 		}
 		super.eSet(featureID, newValue);

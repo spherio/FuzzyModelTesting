@@ -142,12 +142,12 @@ public interface TestResult extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Execution Time</em>' attribute.
-	 * @see #setExecutionTime(double)
+	 * @see #setExecutionTime(long)
 	 * @see org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.ConfigPackage#getTestResult_ExecutionTime()
 	 * @model
 	 * @generated
 	 */
-	double getExecutionTime();
+	long getExecutionTime();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.TestResult#getExecutionTime <em>Execution Time</em>}' attribute.
@@ -157,6 +157,6 @@ public interface TestResult extends EObject {
 	 * @see #getExecutionTime()
 	 * @generated
 	 */
-	void setExecutionTime(double value);
+	void setExecutionTime(long value);
 
 } // TestResult
