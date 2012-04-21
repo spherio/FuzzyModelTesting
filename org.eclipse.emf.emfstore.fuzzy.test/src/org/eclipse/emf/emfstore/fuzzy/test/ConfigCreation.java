@@ -11,14 +11,12 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.emfstore.fuzzy.emfdataprovider.EMFDataProvider;
 import org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.ConfigFactory;
 import org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.TestConfig;
-import org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.TestResult;
-import org.junit.Test;
 
 public class ConfigCreation {
 	
 	private static final String MODEL = "http://org/eclipse/example/bowling";
 
-	@Test
+	//@Test
 	public void createConfig(){
 		TestConfig config = ConfigFactory.eINSTANCE.createTestConfig();
 		config.setNsURI(MODEL);
@@ -26,17 +24,11 @@ public class ConfigCreation {
 		config.setCount(5);
 		config.setTestClass(MyTest.class);
 		
-		TestConfig config2 = ConfigFactory.eINSTANCE.createTestConfig();
-		config2.setNsURI(MODEL);
-		config2.setSeed(10);
-		config2.setCount(90);
-		config2.setTestClass(ConfigCreation.class);
-		
 		Resource resource = new AdapterFactoryEditingDomain(new ComposedAdapterFactory(
-				ComposedAdapterFactory.Descriptor.Registry.INSTANCE), new BasicCommandStack()).createResource(EMFDataProvider.FILE_PATH);
+				ComposedAdapterFactory.Descriptor.Registry.INSTANCE), new BasicCommandStack()).createResource(EMFDataProvider.CONFIG_PATH);
+				
 				
 		resource.getContents().add(config);
-		resource.getContents().add(config2);
 		
 		try {
 			resource.save(null);
@@ -46,19 +38,19 @@ public class ConfigCreation {
 		}
 	}
 	
-	@Test
+//	@Test
 	public void readConfig(){
 		Resource resource = new AdapterFactoryEditingDomain(new ComposedAdapterFactory(
-				ComposedAdapterFactory.Descriptor.Registry.INSTANCE), new BasicCommandStack()).createResource(EMFDataProvider.FILE_PATH);
+				ComposedAdapterFactory.Descriptor.Registry.INSTANCE), new BasicCommandStack()).createResource(EMFDataProvider.CONFIG_PATH);
 				
 		try {
 			resource.load(null);
 			
 			List<EObject> list = resource.getContents();
 			for (EObject obj : list) {
-				if(obj instanceof TestResult){
-					TestResult res = (TestResult) obj;					
-					System.out.println(res.getFailure());
+				if(obj instanceof TestConfig){
+					TestConfig res = (TestConfig) obj;					
+					System.out.println(res);
 				}
 			}
 			

@@ -153,6 +153,15 @@ public class ConfigPackageImpl extends EPackageImpl implements ConfigPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getTestConfig_Id() {
+		return (EAttribute)testConfigEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getTestRun() {
 		return testRunEClass;
 	}
@@ -271,6 +280,7 @@ public class ConfigPackageImpl extends EPackageImpl implements ConfigPackage {
 		createEAttribute(testConfigEClass, TEST_CONFIG__NS_URI);
 		createEAttribute(testConfigEClass, TEST_CONFIG__COUNT);
 		createEAttribute(testConfigEClass, TEST_CONFIG__TEST_CLASS);
+		createEAttribute(testConfigEClass, TEST_CONFIG__ID);
 
 		testRunEClass = createEClass(TEST_RUN);
 		createEReference(testRunEClass, TEST_RUN__CONFIG);
@@ -316,6 +326,7 @@ public class ConfigPackageImpl extends EPackageImpl implements ConfigPackage {
 		initEAttribute(getTestConfig_NsURI(), ecorePackage.getEString(), "nsURI", null, 0, 1, TestConfig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTestConfig_Count(), ecorePackage.getEInt(), "count", null, 0, 1, TestConfig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTestConfig_TestClass(), ecorePackage.getEJavaClass(), "testClass", null, 0, 1, TestConfig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getTestConfig_Id(), ecorePackage.getEString(), "id", null, 0, 1, TestConfig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(testRunEClass, TestRun.class, "TestRun", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getTestRun_Config(), this.getTestConfig(), null, "config", null, 0, 1, TestRun.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

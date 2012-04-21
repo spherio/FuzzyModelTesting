@@ -106,13 +106,22 @@ public interface ConfigPackage extends EPackage {
 	int TEST_CONFIG__TEST_CLASS = 3;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TEST_CONFIG__ID = 4;
+
+	/**
 	 * The number of structural features of the '<em>Test Config</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TEST_CONFIG_FEATURE_COUNT = 4;
+	int TEST_CONFIG_FEATURE_COUNT = 5;
 
 
 	/**
@@ -279,6 +288,17 @@ public interface ConfigPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getTestConfig_TestClass();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.TestConfig#getId <em>Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Id</em>'.
+	 * @see org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.TestConfig#getId()
+	 * @see #getTestConfig()
+	 * @generated
+	 */
+	EAttribute getTestConfig_Id();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.TestRun <em>Test Run</em>}'.
@@ -451,6 +471,14 @@ public interface ConfigPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute TEST_CONFIG__TEST_CLASS = eINSTANCE.getTestConfig_TestClass();
+
+		/**
+		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute TEST_CONFIG__ID = eINSTANCE.getTestConfig_Id();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.impl.TestRunImpl <em>Test Run</em>}' class.

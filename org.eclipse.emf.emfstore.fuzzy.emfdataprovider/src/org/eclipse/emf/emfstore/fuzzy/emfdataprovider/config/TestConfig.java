@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.TestConfig#getNsURI <em>Ns URI</em>}</li>
  *   <li>{@link org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.TestConfig#getCount <em>Count</em>}</li>
  *   <li>{@link org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.TestConfig#getTestClass <em>Test Class</em>}</li>
+ *   <li>{@link org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.TestConfig#getId <em>Id</em>}</li>
  * </ul>
  * </p>
  *
@@ -131,5 +132,31 @@ public interface TestConfig extends EObject {
 	 * @generated
 	 */
 	void setTestClass(Class value);
+
+	/**
+	 * Returns the value of the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Id</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Id</em>' attribute.
+	 * @see #setId(String)
+	 * @see org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.ConfigPackage#getTestConfig_Id()
+	 * @model
+	 * @generated
+	 */
+	String getId();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.TestConfig#getId <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Id</em>' attribute.
+	 * @see #getId()
+	 * @generated
+	 */
+	void setId(String value);
 
 } // TestConfig
