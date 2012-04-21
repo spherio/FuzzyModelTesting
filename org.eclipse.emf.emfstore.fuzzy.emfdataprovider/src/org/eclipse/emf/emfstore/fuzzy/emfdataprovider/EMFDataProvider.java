@@ -16,7 +16,6 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.emfstore.client.model.ProjectSpace;
 import org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.ConfigFactory;
 import org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.TestConfig;
-import org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.TestResult;
 import org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.TestRun;
 import org.eclipse.emf.emfstore.fuzzy.junit.FuzzyDataProvider;
 import org.eclipse.emf.emfstore.modelmutator.api.ModelMutator;
@@ -128,10 +127,7 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 		contents.add(testRun);
 		
 		// add testresults of testrun
-		EList<TestResult> results = testRun.getResults();
-		for(TestResult result : results){
-			contents.add(result);
-		}
+		contents.addAll(testRun.getResults());
 		
 		try {
 			resource.save(null);
