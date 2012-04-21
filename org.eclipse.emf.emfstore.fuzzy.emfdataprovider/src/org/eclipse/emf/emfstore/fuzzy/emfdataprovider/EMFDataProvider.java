@@ -2,6 +2,7 @@ package org.eclipse.emf.emfstore.fuzzy.emfdataprovider;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -25,6 +26,14 @@ import org.junit.runner.notification.RunListener;
 import org.junit.runners.model.TestClass;
 
 public class EMFDataProvider implements FuzzyDataProvider<EObject> {
+	
+	private static final String CONFIG_FOLDER = "fuzzy";
+	
+	private static final String PATH_SEPARATOR = "/";
+
+	private static final String XML_SUFFIX = ".xml";
+	
+	public static final String CONFIG_PATH = "fuzzyConfig.xml";
 
 	private Random random;
 	
@@ -38,24 +47,31 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 
 	private TestRun testRun;
 	
-	public static final String FILE_PATH = "fuzzyConfig.xml";
-	
 	private Resource resource;
 		
 	@Override
 	public void init(){
 				
-		// load config from file			
-		resource = new AdapterFactoryEditingDomain(new ComposedAdapterFactory(
-					ComposedAdapterFactory.Descriptor.Registry.INSTANCE), new BasicCommandStack()).createResource(FILE_PATH);
+		// load testconfig from file			
+		Resource loadResource = new AdapterFactoryEditingDomain(new ComposedAdapterFactory(
+					ComposedAdapterFactory.Descriptor.Registry.INSTANCE), new BasicCommandStack()).createResource(CONFIG_PATH);
 		try {			
-			resource.load(null);			
+			loadResource.load(null);			
 		} catch (IOException e) {
-			throw new RuntimeException("Could not load " + FILE_PATH, e);
+			throw new RuntimeException("Could not load " + CONFIG_PATH, e);
 		}
-		
+
 		// get the testconfig fitting to the current testclass
-		TestConfig config = getTestConfig(resource);
+		TestConfig config = getTestConfig(loadResource);
+				
+		// create new config for one run
+		long testTime = System.currentTimeMillis();
+		String filePath = CONFIG_FOLDER + PATH_SEPARATOR + config.getId() + PATH_SEPARATOR + testTime + XML_SUFFIX;
+		
+		resource = new AdapterFactoryEditingDomain(new ComposedAdapterFactory(
+				ComposedAdapterFactory.Descriptor.Registry.INSTANCE), new BasicCommandStack()).createResource(filePath);
+		
+		resource.getContents().add(config);
 		
 		// init variables
 		random = new Random(config.getSeed());
@@ -70,6 +86,7 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 		// create new TestRun with config
 		testRun = ConfigFactory.eINSTANCE.createTestRun();
 		testRun.setConfig(config);
+		testRun.setTime(new Date(testTime));
 	}
 	
 	@Override
@@ -141,7 +158,7 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 		}
 		
 		throw new IllegalArgumentException("No fitting testconfig for " + 
-					testClass.getName() + " in " + FILE_PATH + " found.");		
+					testClass.getName() + " in " + CONFIG_PATH + " found.");		
 	}
 	
 	private ProjectSpace createProjectSpace() {

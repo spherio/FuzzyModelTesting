@@ -30,7 +30,7 @@ public class EMFRunListener extends RunListener {
 	}
 	
 	public void testRunStarted(Description description) throws Exception {
-		testRun.setTime(new Date(System.currentTimeMillis()));
+		
 	}
 	
 	public void testRunFinished(Result result) throws Exception {		
