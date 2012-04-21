@@ -1,6 +1,7 @@
 package org.eclipse.emf.emfstore.fuzzy.test;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.emfstore.fuzzy.emfdataprovider.EMFDataProvider;
 import org.eclipse.emf.emfstore.fuzzy.junit.FuzzyRunner;
 import org.eclipse.emf.emfstore.fuzzy.junit.Annotations.Data;
@@ -27,5 +28,9 @@ public class MyTest {
 			System.out.println(obj);
 			printElements(obj);
 		}
+	}
+	
+	public static void main(String[] args){
+		System.out.println(EcoreUtil.generateUUID());
 	}
 }
