@@ -28,7 +28,11 @@ import org.junit.runners.model.TestClass;
 
 public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 	
-	private static final String CONFIG_FOLDER = "fuzzy";
+	// TODO make folders etc configurable
+	
+	private static final String PROTOCOL_PREFIX = "file://";
+	
+	private static final String CONFIG_FOLDER = "D:/downloads/fuzzy";
 	
 	private static final String PATH_SEPARATOR = "/";
 
@@ -78,7 +82,7 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 		// create new config for one run
 		long testTime = System.currentTimeMillis();
 		
-		runResource = editingDomain.createResource(getRunPath(testTime, config));
+		runResource = editingDomain.createResource(PROTOCOL_PREFIX + getRunPath(testTime, config));
 		
 		runResource.getContents().add(config);
 		
@@ -129,7 +133,7 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 			
 			// add a new config file if it does not exist
 			String configPath = getConfigPath(config);
-			Resource configResource = editingDomain.createResource(configPath + CONFIG_FILE);
+			Resource configResource = editingDomain.createResource(PROTOCOL_PREFIX + configPath + CONFIG_FILE);
 			configResource.getContents().add(config);
 			configResource.save(null);
 			
