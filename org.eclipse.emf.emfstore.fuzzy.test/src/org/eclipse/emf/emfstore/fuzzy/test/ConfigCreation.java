@@ -8,9 +8,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-import org.eclipse.emf.emfstore.fuzzy.emfdataprovider.EMFDataProvider;
-import org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.ConfigFactory;
-import org.eclipse.emf.emfstore.fuzzy.emfdataprovider.config.TestConfig;
+import org.eclipse.emf.emfstore.fuzzy.EMFDataProvider;
+import org.eclipse.emf.emfstore.fuzzy.config.ConfigFactory;
+import org.eclipse.emf.emfstore.fuzzy.config.TestConfig;
 
 public class ConfigCreation {
 	

@@ -3,7 +3,7 @@ package org.eclipse.emf.emfstore.fuzzy.test;
 import junit.framework.Assert;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.emfstore.fuzzy.emfdataprovider.EMFDataProvider;
+import org.eclipse.emf.emfstore.fuzzy.EMFDataProvider;
 import org.eclipse.emf.emfstore.fuzzy.junit.Annotations.Data;
 import org.eclipse.emf.emfstore.fuzzy.junit.Annotations.DataProvider;
 import org.eclipse.emf.emfstore.fuzzy.junit.FuzzyRunner;

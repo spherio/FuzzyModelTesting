@@ -4,7 +4,7 @@ Bundle-Name: Test
 Bundle-SymbolicName: org.eclipse.emf.emfstore.fuzzy.test;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.emf.emfstore.fuzzy.emfdataprovider;bundle-version="1.0.0",
+ org.eclipse.emf.emfstore.fuzzy;bundle-version="1.0.0",
  org.eclipse.emf.emfstore.fuzzy.junit;bundle-version="1.0.0",
  org.eclipse.emf;bundle-version="2.6.0",
  org.eclipse.emf.ecore.xmi;bundle-version="2.7.0",
