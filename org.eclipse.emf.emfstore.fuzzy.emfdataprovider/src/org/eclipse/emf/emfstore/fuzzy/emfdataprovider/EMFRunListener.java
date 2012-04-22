@@ -2,7 +2,6 @@ package org.eclipse.emf.emfstore.fuzzy.emfdataprovider;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Date;
 
 import junit.framework.AssertionFailedError;
 
@@ -29,9 +28,7 @@ public class EMFRunListener extends RunListener {
 		this.testRun = testRun;
 	}
 	
-	public void testRunStarted(Description description) throws Exception {
-		
-	}
+	public void testRunStarted(Description description) throws Exception {}
 	
 	public void testRunFinished(Result result) throws Exception {		
 		dataProvider.finish();
