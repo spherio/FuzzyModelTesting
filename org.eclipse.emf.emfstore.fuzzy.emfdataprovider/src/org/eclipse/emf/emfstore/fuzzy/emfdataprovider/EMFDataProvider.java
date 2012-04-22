@@ -1,5 +1,7 @@
 package org.eclipse.emf.emfstore.fuzzy.emfdataprovider;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
@@ -32,7 +34,11 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 
 	private static final String XML_SUFFIX = ".xml";
 	
-	public static final String CONFIG_PATH = "fuzzyConfig.xml";
+	public static final String TEST_CONFIG_PATH = "fuzzyConfig.xml";
+	
+	public static final String CONFIG_FILE = "config.xml";
+	
+	public static final String RUNS_FILE = "runs.txt";
 
 	private Random random;
 	
@@ -46,31 +52,35 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 
 	private TestRun testRun;
 	
-	private Resource resource;
+	private Resource runResource;
+
+	private TestConfig config;
+
+	private AdapterFactoryEditingDomain editingDomain;
 		
 	@Override
 	public void init(){
 				
 		// load testconfig from file			
-		Resource loadResource = new AdapterFactoryEditingDomain(new ComposedAdapterFactory(
-					ComposedAdapterFactory.Descriptor.Registry.INSTANCE), new BasicCommandStack()).createResource(CONFIG_PATH);
+		editingDomain = new AdapterFactoryEditingDomain(new ComposedAdapterFactory(
+					ComposedAdapterFactory.Descriptor.Registry.INSTANCE), new BasicCommandStack());
+		
+		Resource loadResource = editingDomain.createResource(TEST_CONFIG_PATH);
 		try {			
 			loadResource.load(null);			
 		} catch (IOException e) {
-			throw new RuntimeException("Could not load " + CONFIG_PATH, e);
+			throw new RuntimeException("Could not load " + TEST_CONFIG_PATH, e);
 		}
 
 		// get the testconfig fitting to the current testclass
-		TestConfig config = getTestConfig(loadResource);
+		config = getTestConfig(loadResource, testClass);
 				
 		// create new config for one run
 		long testTime = System.currentTimeMillis();
-		String filePath = CONFIG_FOLDER + PATH_SEPARATOR + config.getId() + PATH_SEPARATOR + testTime + XML_SUFFIX;
 		
-		resource = new AdapterFactoryEditingDomain(new ComposedAdapterFactory(
-				ComposedAdapterFactory.Descriptor.Registry.INSTANCE), new BasicCommandStack()).createResource(filePath);
+		runResource = editingDomain.createResource(getRunPath(testTime, config));
 		
-		resource.getContents().add(config);
+		runResource.getContents().add(config);
 		
 		// init variables
 		random = new Random(config.getSeed());
@@ -103,6 +113,37 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 			
 		return projectSpace;	
 	}
+		
+	@SuppressWarnings("unchecked")
+	public void finish(){
+		// add testrun
+		EList<EObject> contents = runResource.getContents();
+		contents.add(testRun);
+		
+		// add testresults of testrun
+		contents.addAll(testRun.getResults());
+		
+		try {
+			// save the resource
+			runResource.save(null);
+			
+			// add a new config file if it does not exist
+			String configPath = getConfigPath(config);
+			Resource configResource = editingDomain.createResource(configPath + CONFIG_FILE);
+			configResource.getContents().add(config);
+			configResource.save(null);
+			
+			// add this run to the runs file
+			FileWriter fw = new FileWriter(configPath + RUNS_FILE, true);			
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(String.valueOf(testRun.getTime().getTime()));
+			bw.newLine();
+			bw.close();
+			fw.close();
+		} catch (IOException e) {
+			throw new RuntimeException("Could not save the config after running!", e);
+		}
+	}
 	
 	@Override
 	public int size() {
@@ -120,27 +161,11 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 				new RunListener[]{new EMFRunListener(this, testRun)});
 	}
 	
-	@SuppressWarnings("unchecked")
-	public void finish(){
-		// add testrun
-		EList<EObject> contents = resource.getContents();
-		contents.add(testRun);
-		
-		// add testresults of testrun
-		contents.addAll(testRun.getResults());
-		
-		try {
-			resource.save(null);
-		} catch (IOException e) {
-			throw new RuntimeException("Could not save the config after running!", e);
-		}
-	}
-	
 	public int getCurrentSeedCount(){
 		return seedCount;
 	}
 	
-	private TestConfig getTestConfig(Resource resource){
+	private static TestConfig getTestConfig(Resource resource, TestClass testClass){
 		// TODO modify/check to be more robust against wrong input
 		// TODO add a standard TestConfig? e.g. where clazz = null / or testconfig for complete packages
 		for(EObject object : resource.getContents()){
@@ -154,15 +179,23 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 		}
 		
 		throw new IllegalArgumentException("No fitting testconfig for " + 
-					testClass.getName() + " in " + CONFIG_PATH + " found.");		
+					testClass.getName() + " in " + TEST_CONFIG_PATH + " found.");		
 	}
 	
-	private ProjectSpace createProjectSpace() {
+	public static String getRunPath(long millis, TestConfig config){
+		String runPath = String.valueOf(millis).substring(0, 5) + PATH_SEPARATOR + millis + XML_SUFFIX;
+		return getConfigPath(config) + runPath;
+	}
+	
+	public static String getConfigPath(TestConfig config){
+		return CONFIG_FOLDER + PATH_SEPARATOR + config.getId() + PATH_SEPARATOR;
+	}
+	
+	private static ProjectSpace createProjectSpace() {
 		ProjectSpace projectSpace = org.eclipse.emf.emfstore.client.model.ModelFactory.eINSTANCE.createProjectSpace();
 		projectSpace.setProject(org.eclipse.emf.emfstore.common.model.ModelFactory.eINSTANCE.createProject());
 		projectSpace.setProjectName("Project");
 		projectSpace.setProjectDescription("Project created by EMFDataProvider");	
 		return projectSpace;
 	}
-
 }
