@@ -47,6 +47,8 @@ public class FuzzyRunner extends Suite {
 	private FuzzyDataProvider<?> dataProvider;
 	
 	private Class<?> defaultDataProviderClass = IntDataProvider.class;
+	
+	public static final String NAME_SEPARATOR = " ";
 		
 	/**
 	 * Default constructor, called by JUnit. 
@@ -58,7 +60,10 @@ public class FuzzyRunner extends Suite {
 		dataProvider.init();
 		dataField = getModelField();	
 		for (int i = 0; i < dataProvider.size(); i++) {
-			runners.add(new FuzzyTestClassRunner(clazz, dataProvider, dataField, i + 1));
+			FuzzyTestClassRunner runner = new FuzzyTestClassRunner(clazz, dataProvider, dataField, i + 1);
+			if(runner.getChildren().size() > 0){
+				runners.add(runner);
+			}
 		}
 	}
 	

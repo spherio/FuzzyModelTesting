@@ -31,7 +31,7 @@ public class ConfigFactoryImpl extends EFactoryImpl implements ConfigFactory {
 	 */
 	public static ConfigFactory init() {
 		try {
-			ConfigFactory theConfigFactory = (ConfigFactory)EPackage.Registry.INSTANCE.getEFactory("http://org/eclipse/emf/emfstore/fuzzy/emfdataprovider/config"); 
+			ConfigFactory theConfigFactory = (ConfigFactory)EPackage.Registry.INSTANCE.getEFactory("http://org/eclipse/emf/emfstore/fuzzy/config"); 
 			if (theConfigFactory != null) {
 				return theConfigFactory;
 			}
@@ -62,6 +62,7 @@ public class ConfigFactoryImpl extends EFactoryImpl implements ConfigFactory {
 			case ConfigPackage.TEST_CONFIG: return createTestConfig();
 			case ConfigPackage.TEST_RUN: return createTestRun();
 			case ConfigPackage.TEST_RESULT: return createTestResult();
+			case ConfigPackage.TEST_DIFF: return createTestDiff();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -95,6 +96,16 @@ public class ConfigFactoryImpl extends EFactoryImpl implements ConfigFactory {
 	public TestResult createTestResult() {
 		TestResultImpl testResult = new TestResultImpl();
 		return testResult;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public TestDiff createTestDiff() {
+		TestDiffImpl testDiff = new TestDiffImpl();
+		return testDiff;
 	}
 
 	/**

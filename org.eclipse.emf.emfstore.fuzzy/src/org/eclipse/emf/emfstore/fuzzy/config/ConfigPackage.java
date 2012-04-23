@@ -41,7 +41,7 @@ public interface ConfigPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://org/eclipse/emf/emfstore/fuzzy/emfdataprovider/config";
+	String eNS_URI = "http://org/eclipse/emf/emfstore/fuzzy/config";
 
 	/**
 	 * The package namespace name.
@@ -236,6 +236,61 @@ public interface ConfigPackage extends EPackage {
 
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.emf.emfstore.fuzzy.config.impl.TestDiffImpl <em>Test Diff</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.emf.emfstore.fuzzy.config.impl.TestDiffImpl
+	 * @see org.eclipse.emf.emfstore.fuzzy.config.impl.ConfigPackageImpl#getTestDiff()
+	 * @generated
+	 */
+	int TEST_DIFF = 3;
+
+	/**
+	 * The feature id for the '<em><b>Last Update</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TEST_DIFF__LAST_UPDATE = 0;
+
+	/**
+	 * The feature id for the '<em><b>Config</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TEST_DIFF__CONFIG = 1;
+
+	/**
+	 * The feature id for the '<em><b>Old Result</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TEST_DIFF__OLD_RESULT = 2;
+
+	/**
+	 * The feature id for the '<em><b>New Result</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TEST_DIFF__NEW_RESULT = 3;
+
+	/**
+	 * The number of structural features of the '<em>Test Diff</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TEST_DIFF_FEATURE_COUNT = 4;
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.emf.emfstore.fuzzy.config.TestConfig <em>Test Config</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -409,6 +464,60 @@ public interface ConfigPackage extends EPackage {
 	EAttribute getTestResult_ExecutionTime();
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.emf.emfstore.fuzzy.config.TestDiff <em>Test Diff</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Test Diff</em>'.
+	 * @see org.eclipse.emf.emfstore.fuzzy.config.TestDiff
+	 * @generated
+	 */
+	EClass getTestDiff();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.emf.emfstore.fuzzy.config.TestDiff#getLastUpdate <em>Last Update</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Last Update</em>'.
+	 * @see org.eclipse.emf.emfstore.fuzzy.config.TestDiff#getLastUpdate()
+	 * @see #getTestDiff()
+	 * @generated
+	 */
+	EAttribute getTestDiff_LastUpdate();
+
+	/**
+	 * Returns the meta object for the reference '{@link org.eclipse.emf.emfstore.fuzzy.config.TestDiff#getConfig <em>Config</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Config</em>'.
+	 * @see org.eclipse.emf.emfstore.fuzzy.config.TestDiff#getConfig()
+	 * @see #getTestDiff()
+	 * @generated
+	 */
+	EReference getTestDiff_Config();
+
+	/**
+	 * Returns the meta object for the reference '{@link org.eclipse.emf.emfstore.fuzzy.config.TestDiff#getOldResult <em>Old Result</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Old Result</em>'.
+	 * @see org.eclipse.emf.emfstore.fuzzy.config.TestDiff#getOldResult()
+	 * @see #getTestDiff()
+	 * @generated
+	 */
+	EReference getTestDiff_OldResult();
+
+	/**
+	 * Returns the meta object for the reference '{@link org.eclipse.emf.emfstore.fuzzy.config.TestDiff#getNewResult <em>New Result</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>New Result</em>'.
+	 * @see org.eclipse.emf.emfstore.fuzzy.config.TestDiff#getNewResult()
+	 * @see #getTestDiff()
+	 * @generated
+	 */
+	EReference getTestDiff_NewResult();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -563,6 +672,48 @@ public interface ConfigPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute TEST_RESULT__EXECUTION_TIME = eINSTANCE.getTestResult_ExecutionTime();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.emf.emfstore.fuzzy.config.impl.TestDiffImpl <em>Test Diff</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.emf.emfstore.fuzzy.config.impl.TestDiffImpl
+		 * @see org.eclipse.emf.emfstore.fuzzy.config.impl.ConfigPackageImpl#getTestDiff()
+		 * @generated
+		 */
+		EClass TEST_DIFF = eINSTANCE.getTestDiff();
+
+		/**
+		 * The meta object literal for the '<em><b>Last Update</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute TEST_DIFF__LAST_UPDATE = eINSTANCE.getTestDiff_LastUpdate();
+
+		/**
+		 * The meta object literal for the '<em><b>Config</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TEST_DIFF__CONFIG = eINSTANCE.getTestDiff_Config();
+
+		/**
+		 * The meta object literal for the '<em><b>Old Result</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TEST_DIFF__OLD_RESULT = eINSTANCE.getTestDiff_OldResult();
+
+		/**
+		 * The meta object literal for the '<em><b>New Result</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TEST_DIFF__NEW_RESULT = eINSTANCE.getTestDiff_NewResult();
 
 	}
 

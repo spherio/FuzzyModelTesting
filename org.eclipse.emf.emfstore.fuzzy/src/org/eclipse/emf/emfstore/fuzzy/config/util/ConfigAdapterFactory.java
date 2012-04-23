@@ -79,6 +79,9 @@ public class ConfigAdapterFactory extends AdapterFactoryImpl {
 			public Object caseTestResult(TestResult object) {
 				return createTestResultAdapter();
 			}
+			public Object caseTestDiff(TestDiff object) {
+				return createTestDiffAdapter();
+			}
 			public Object defaultCase(EObject object) {
 				return createEObjectAdapter();
 			}
@@ -136,6 +139,20 @@ public class ConfigAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createTestResultAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.emf.emfstore.fuzzy.config.TestDiff <em>Test Diff</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.emf.emfstore.fuzzy.config.TestDiff
+	 * @generated
+	 */
+	public Adapter createTestDiffAdapter() {
 		return null;
 	}
 

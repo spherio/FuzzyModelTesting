@@ -27,4 +27,10 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="failure" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="executionTime" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TestDiff">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lastUpdate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="config" eType="#//TestConfig"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="oldResult" eType="#//TestResult"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="newResult" eType="#//TestResult"/>
+  </eClassifiers>
 </ecore:EPackage>

@@ -7,12 +7,9 @@
 package org.eclipse.emf.emfstore.fuzzy.config.impl;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-
 import org.eclipse.emf.emfstore.fuzzy.config.ConfigPackage;
 import org.eclipse.emf.emfstore.fuzzy.config.TestResult;
 

@@ -1,6 +1,8 @@
 package org.eclipse.emf.emfstore.fuzzy.junit;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.emf.emfstore.fuzzy.junit.Annotations.Data;
 import org.junit.runner.Runner;
@@ -67,10 +69,40 @@ public class FuzzyTestClassRunner extends BlockJUnit4ClassRunner {
 	}
 	
 	@Override
-	protected String testName(final FrameworkMethod method) {
-		return String.format("%s [%s]", method.getName(), counter);
+	protected List<FrameworkMethod> getChildren() {
+		// filter for tests contained in config		
+		List<FrameworkMethod> children = new ArrayList<FrameworkMethod>();		
+		List<Test> testsToRun = dataProvider.getTestsToRun();
+		if(testsToRun != null){
+			for(Test test : testsToRun){
+				for (FrameworkMethod child : super.getChildren()) {
+					if(test.getSeedCount() == counter && test.getName().equals(child.getName())){
+						children.add(child);
+					}
+				}
+			}
+			
+			// if there is no test, the dataProvider has to be set to the next element
+			if(children.size() == 0){
+				dataProvider.next();
+			}
+			
+		} else {
+			children = super.getChildren();
+		}
+		
+		return children;
 	}
-
+	
+	private String testName(String name){
+		return String.format("%s%s[%s]", name, FuzzyRunner.NAME_SEPARATOR, counter);
+	}
+	
+	@Override
+	protected String testName(final FrameworkMethod method) {
+		return testName(method.getName());
+	}
+	
 	@Override
 	protected String getName() {
 		return String.format("[%s]", counter);

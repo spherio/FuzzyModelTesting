@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.emf.emfstore.fuzzy.config.ConfigFactory;
 import org.eclipse.emf.emfstore.fuzzy.config.ConfigPackage;
 import org.eclipse.emf.emfstore.fuzzy.config.TestConfig;
+import org.eclipse.emf.emfstore.fuzzy.config.TestDiff;
 import org.eclipse.emf.emfstore.fuzzy.config.TestResult;
 import org.eclipse.emf.emfstore.fuzzy.config.TestRun;
 
@@ -42,6 +43,12 @@ public class ConfigPackageImpl extends EPackageImpl implements ConfigPackage {
 	 * @generated
 	 */
 	private EClass testResultEClass = null;
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass testDiffEClass = null;
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
 	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
@@ -252,6 +259,51 @@ public class ConfigPackageImpl extends EPackageImpl implements ConfigPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getTestDiff() {
+		return testDiffEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getTestDiff_LastUpdate() {
+		return (EAttribute)testDiffEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getTestDiff_Config() {
+		return (EReference)testDiffEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getTestDiff_OldResult() {
+		return (EReference)testDiffEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getTestDiff_NewResult() {
+		return (EReference)testDiffEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public ConfigFactory getConfigFactory() {
 		return (ConfigFactory)getEFactoryInstance();
 	}
@@ -293,6 +345,12 @@ public class ConfigPackageImpl extends EPackageImpl implements ConfigPackage {
 		createEAttribute(testResultEClass, TEST_RESULT__ERROR);
 		createEAttribute(testResultEClass, TEST_RESULT__FAILURE);
 		createEAttribute(testResultEClass, TEST_RESULT__EXECUTION_TIME);
+
+		testDiffEClass = createEClass(TEST_DIFF);
+		createEAttribute(testDiffEClass, TEST_DIFF__LAST_UPDATE);
+		createEReference(testDiffEClass, TEST_DIFF__CONFIG);
+		createEReference(testDiffEClass, TEST_DIFF__OLD_RESULT);
+		createEReference(testDiffEClass, TEST_DIFF__NEW_RESULT);
 	}
 
 	/**
@@ -339,6 +397,12 @@ public class ConfigPackageImpl extends EPackageImpl implements ConfigPackage {
 		initEAttribute(getTestResult_Error(), ecorePackage.getEString(), "error", null, 0, 1, TestResult.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTestResult_Failure(), ecorePackage.getEString(), "failure", null, 0, 1, TestResult.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTestResult_ExecutionTime(), ecorePackage.getELong(), "executionTime", null, 0, 1, TestResult.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(testDiffEClass, TestDiff.class, "TestDiff", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getTestDiff_LastUpdate(), ecorePackage.getEDate(), "lastUpdate", null, 0, 1, TestDiff.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTestDiff_Config(), this.getTestConfig(), null, "config", null, 0, 1, TestDiff.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTestDiff_OldResult(), this.getTestResult(), null, "oldResult", null, 0, 1, TestDiff.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTestDiff_NewResult(), this.getTestResult(), null, "newResult", null, 0, 1, TestDiff.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

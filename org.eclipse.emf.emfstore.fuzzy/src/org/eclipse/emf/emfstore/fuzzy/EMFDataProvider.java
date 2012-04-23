@@ -3,6 +3,7 @@ package org.eclipse.emf.emfstore.fuzzy;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -18,8 +19,12 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.emfstore.client.model.ProjectSpace;
 import org.eclipse.emf.emfstore.fuzzy.config.ConfigFactory;
 import org.eclipse.emf.emfstore.fuzzy.config.TestConfig;
+import org.eclipse.emf.emfstore.fuzzy.config.TestDiff;
+import org.eclipse.emf.emfstore.fuzzy.config.TestResult;
 import org.eclipse.emf.emfstore.fuzzy.config.TestRun;
+import org.eclipse.emf.emfstore.fuzzy.diff.DiffGenerator;
 import org.eclipse.emf.emfstore.fuzzy.junit.FuzzyDataProvider;
+import org.eclipse.emf.emfstore.fuzzy.junit.Test;
 import org.eclipse.emf.emfstore.modelmutator.api.ModelMutator;
 import org.eclipse.emf.emfstore.modelmutator.api.ModelMutatorConfiguration;
 import org.eclipse.emf.emfstore.modelmutator.api.ModelMutatorUtil;
@@ -40,11 +45,12 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 
 	private TestRun testRun;
 	
-	private Resource runResource;
-
 	private TestConfig config;
 
 	private AdapterFactoryEditingDomain editingDomain;
+	
+	// TODO add possibility to configure filterTests
+	private boolean filterTests = false;
 		
 	@Override
 	public void init(){
@@ -53,23 +59,25 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 		editingDomain = new AdapterFactoryEditingDomain(new ComposedAdapterFactory(
 					ComposedAdapterFactory.Descriptor.Registry.INSTANCE), new BasicCommandStack());
 		
-		Resource loadResource = editingDomain.createResource(FuzzyConstants.TEST_CONFIG_PATH);
+		Resource loadResource = editingDomain.createResource(FuzzyUtil.TEST_CONFIG_PATH);
 		try {			
 			loadResource.load(null);			
 		} catch (IOException e) {
-			throw new RuntimeException("Could not load " + FuzzyConstants.TEST_CONFIG_PATH, e);
+			throw new RuntimeException("Could not load " + FuzzyUtil.TEST_CONFIG_PATH, e);
 		}
 
 		// get the testconfig fitting to the current testclass
-		config = getTestConfig(loadResource, testClass);
-				
-		// create new config for one run
-		long testTime = System.currentTimeMillis();
+		config = FuzzyUtil.getTestConfig(loadResource, testClass);
 		
-		runResource = editingDomain.createResource(FuzzyConstants.PROTOCOL_PREFIX + getRunPath(testTime, config));
-		
-		runResource.getContents().add(config);
-		
+		// add a new config file if it does not exist
+		Resource configResource = editingDomain.createResource(FuzzyUtil.PROTOCOL_PREFIX + FuzzyUtil.getConfigPath(config) + FuzzyUtil.CONFIG_FILE);
+		configResource.getContents().add(config);
+		try {
+			configResource.save(null);
+		} catch (IOException e) {
+			throw new RuntimeException("Could not save config!", e);
+		}
+						
 		// init variables
 		random = new Random(config.getSeed());
 		count = config.getCount();
@@ -83,12 +91,12 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 		// create new TestRun with config
 		testRun = ConfigFactory.eINSTANCE.createTestRun();
 		testRun.setConfig(config);
-		testRun.setTime(new Date(testTime));
+		testRun.setTime(new Date());
 	}
 	
 	@Override
 	public EObject next() {		
-		ProjectSpace projectSpace = createProjectSpace();
+		ProjectSpace projectSpace = FuzzyUtil.createProjectSpace();
 		
 		// create a new configuration for the next model
 		ModelMutatorConfiguration mmc = new ModelMutatorConfiguration(ePackage,
@@ -104,7 +112,8 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 		
 	@SuppressWarnings("unchecked")
 	public void finish(){
-		// add testrun
+		// create run resource
+		Resource runResource = editingDomain.createResource(FuzzyUtil.PROTOCOL_PREFIX + FuzzyUtil.getRunPath(testRun.getTime().getTime(), config));
 		EList<EObject> contents = runResource.getContents();
 		contents.add(testRun);
 		
@@ -115,14 +124,8 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 			// save the resource
 			runResource.save(null);
 			
-			// add a new config file if it does not exist
-			String configPath = getConfigPath(config);
-			Resource configResource = editingDomain.createResource(FuzzyConstants.PROTOCOL_PREFIX + configPath + FuzzyConstants.CONFIG_FILE);
-			configResource.getContents().add(config);
-			configResource.save(null);
-			
 			// add this run to the runs file
-			FileWriter fw = new FileWriter(configPath + FuzzyConstants.RUNS_FILE, true);			
+			FileWriter fw = new FileWriter(FuzzyUtil.getConfigPath(config) + FuzzyUtil.RUNS_FILE, true);			
 			BufferedWriter bw = new BufferedWriter(fw);
 			bw.write(String.valueOf(testRun.getTime().getTime()));
 			bw.newLine();
@@ -149,41 +152,36 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 				new RunListener[]{new EMFRunListener(this, testRun)});
 	}
 	
-	public int getCurrentSeedCount(){
-		return seedCount;
-	}
-	
-	private static TestConfig getTestConfig(Resource resource, TestClass testClass){
-		// TODO modify/check to be more robust against wrong input
-		// TODO add a standard TestConfig? e.g. where clazz = null / or testconfig for complete packages
-		for(EObject object : resource.getContents()){
-			if(object instanceof TestConfig){
-				TestConfig config = (TestConfig) object;
-				Class<?> clazz = config.getTestClass();
-				if(clazz.getName().equals(testClass.getJavaClass().getName())){
-					return config;
+	@Override
+	public List<Test> getTestsToRun() {
+		if(!filterTests){
+			return null;
+		} 
+		
+		Resource diffResource = editingDomain.createResource(DiffGenerator.DIFF_PATH);
+		
+		try {
+			diffResource.load(null);
+		} catch (IOException e) {
+			throw new RuntimeException("Could not load diff file!", e);
+		}
+		
+		EList<EObject> contents = diffResource.getContents();
+		List<Test> tests = new ArrayList<Test>();
+		for(EObject obj : contents){
+			if(obj instanceof TestDiff){
+				TestDiff diff = (TestDiff) obj;
+				if(diff.getConfig().equals(config)){
+					TestResult result = FuzzyUtil.getValidTestResult(diff);
+					tests.add(new Test(result.getTestName(), result.getSeedCount()));
 				}
 			}
 		}
 		
-		throw new IllegalArgumentException("No fitting testconfig for " + 
-					testClass.getName() + " in " + FuzzyConstants.TEST_CONFIG_PATH + " found.");		
+		return tests;
 	}
 	
-	public static String getRunPath(long millis, TestConfig config){
-		String runPath = String.valueOf(millis).substring(0, 5) + FuzzyConstants.PATH_SEPARATOR + millis + FuzzyConstants.XML_SUFFIX;
-		return getConfigPath(config) + runPath;
-	}
-	
-	public static String getConfigPath(TestConfig config){
-		return FuzzyConstants.CONFIG_FOLDER + FuzzyConstants.PATH_SEPARATOR + config.getId() + FuzzyConstants.PATH_SEPARATOR;
-	}
-	
-	private static ProjectSpace createProjectSpace() {
-		ProjectSpace projectSpace = org.eclipse.emf.emfstore.client.model.ModelFactory.eINSTANCE.createProjectSpace();
-		projectSpace.setProject(org.eclipse.emf.emfstore.common.model.ModelFactory.eINSTANCE.createProject());
-		projectSpace.setProjectName("Project");
-		projectSpace.setProjectDescription("Project created by EMFDataProvider");	
-		return projectSpace;
+	public int getCurrentSeedCount(){
+		return seedCount;
 	}
 }

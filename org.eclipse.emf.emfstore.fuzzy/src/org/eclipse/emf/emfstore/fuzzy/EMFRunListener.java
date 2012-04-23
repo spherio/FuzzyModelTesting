@@ -8,6 +8,7 @@ import junit.framework.AssertionFailedError;
 import org.eclipse.emf.emfstore.fuzzy.config.ConfigFactory;
 import org.eclipse.emf.emfstore.fuzzy.config.TestResult;
 import org.eclipse.emf.emfstore.fuzzy.config.TestRun;
+import org.eclipse.emf.emfstore.fuzzy.junit.FuzzyRunner;
 import org.junit.runner.Description;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
@@ -35,8 +36,8 @@ public class EMFRunListener extends RunListener {
 	}	
 	
 	public void testStarted(Description description) throws Exception {
-		testResult = ConfigFactory.eINSTANCE.createTestResult();
-		testResult.setTestName(description.getMethodName());		
+		testResult = ConfigFactory.eINSTANCE.createTestResult();		
+		testResult.setTestName(description.getMethodName().split(FuzzyRunner.NAME_SEPARATOR)[0]);		
 		testStartTime = System.currentTimeMillis();
 	}
 
