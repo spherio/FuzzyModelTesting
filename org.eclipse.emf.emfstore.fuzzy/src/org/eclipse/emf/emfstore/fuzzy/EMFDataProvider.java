@@ -64,11 +64,6 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 			throw new RuntimeException("Could not load " + configFile, e);
 		}
 		
-		System.out.println("#######################################################################");
-		for(EObject obj : loadResource.getContents()){
-			System.out.println(obj);
-		}
-
 		// get the testconfig fitting to the current testclass
 		config = FuzzyUtil.getTestConfig(loadResource, testClass);
 								
