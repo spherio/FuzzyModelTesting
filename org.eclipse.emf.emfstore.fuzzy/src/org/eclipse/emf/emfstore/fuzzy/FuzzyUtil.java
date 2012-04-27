@@ -20,26 +20,20 @@ import org.junit.runners.model.TestClass;
 public class FuzzyUtil {
 	
 	// TODO make folders etc configurable
+			
+	public static final String FUZZY_FOLDER = "fuzzy/";
 	
-	public static final String PROTOCOL_PREFIX = "file://";
-	
-	public static final String CONFIG_FOLDER = "D:/downloads/fuzzy";
-	
-	public static final String FUZZY_FOLDER = "fuzzy";
+	public static final String RUN_FOLDER = "../fuzzy/testruns/";
 	
 	public static final String PATH_SEPARATOR = System.getProperty("file.separator");
 
 	public static final String XML_SUFFIX = ".xml";
 	
-	public static final String TEST_CONFIG_PATH = PROTOCOL_PREFIX + "D:/downloads/fuzzyConfig.xml";
+	public static final String TEST_CONFIG_PATH = FUZZY_FOLDER + "fuzzyConfig.xml";
+			
+	public static final String DIFF_FILE = FUZZY_FOLDER + PATH_SEPARATOR + "diff" + XML_SUFFIX;
 	
-	public static final String CONFIG_FILE = "config.xml";
-	
-	public static final String RUNS_FILE = "runs.txt";
-	
-	public static final String DIFF_FILE = FuzzyUtil.CONFIG_FOLDER + "diff" + FuzzyUtil.XML_SUFFIX;
-	
-	public static final String PROPERTIES_FILE = "fuzzy.properties";
+	public static final String PROPERTIES_FILE = FUZZY_FOLDER + "fuzzy.properties";
 	
 	public static final String PROP_PRE = "fuzzy";
 	
@@ -49,7 +43,6 @@ public class FuzzyUtil {
 	private static Properties properties;
 	
 	public static TestConfig getTestConfig(Resource resource, TestClass testClass){
-		// TODO modify/check to be more robust against wrong input
 		// TODO add a standard TestConfig? e.g. where clazz = null / or testconfig for complete packages
 		for(EObject object : resource.getContents()){
 			if(object instanceof TestConfig){
@@ -83,15 +76,6 @@ public class FuzzyUtil {
 			return result;
 		}
 		throw new RuntimeException("Configuration of TestDiff is wrong! (Does not contain any TestResult)");
-	}
-	
-	public static String getRunPath(long millis, TestConfig config){
-		String runPath = String.valueOf(millis).substring(0, 5) + PATH_SEPARATOR + millis + XML_SUFFIX;
-		return getConfigPath(config) + runPath;
-	}
-	
-	public static String getConfigPath(TestConfig config){
-		return CONFIG_FOLDER + PATH_SEPARATOR + config.getId() + PATH_SEPARATOR;
 	}
 	
 	public static ProjectSpace createProjectSpace() {

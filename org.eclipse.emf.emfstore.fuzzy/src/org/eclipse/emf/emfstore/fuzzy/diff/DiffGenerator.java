@@ -22,7 +22,7 @@ public class DiffGenerator {
 	private Resource diffResource;
 	
 	public DiffGenerator(){
-		this(FuzzyUtil.PROTOCOL_PREFIX + FuzzyUtil.DIFF_FILE);
+		this(FuzzyUtil.DIFF_FILE);
 	}
 	
 	public DiffGenerator(String diffPath){
