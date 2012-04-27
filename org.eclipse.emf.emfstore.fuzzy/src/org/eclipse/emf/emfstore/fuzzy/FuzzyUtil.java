@@ -23,13 +23,17 @@ public class FuzzyUtil {
 			
 	public static final String FUZZY_FOLDER = "fuzzy/";
 	
-	public static final String RUN_FOLDER = "../fuzzy/testruns/";
+	public static final String ARTIFACT_FOLDER = "../fuzzy/";
+	
+	public static final String RUN_FOLDER = ARTIFACT_FOLDER + "testruns/";
 	
 	public static final String PATH_SEPARATOR = System.getProperty("file.separator");
 
 	public static final String XML_SUFFIX = ".xml";
 	
-	public static final String TEST_CONFIG_PATH = FUZZY_FOLDER + "fuzzyConfig.xml";
+	public static final String TEST_CONFIG_FILE = "fuzzyConfig.xml";
+	
+	public static final String TEST_CONFIG_PATH = FUZZY_FOLDER + TEST_CONFIG_FILE;
 			
 	public static final String DIFF_FILE = FUZZY_FOLDER + PATH_SEPARATOR + "diff" + XML_SUFFIX;
 	
