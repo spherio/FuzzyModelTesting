@@ -1,5 +1,7 @@
 package org.eclipse.emf.emfstore.fuzzy.test;
 
+import junit.framework.Assert;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.emfstore.fuzzy.EMFDataProvider;
@@ -18,19 +20,11 @@ public class MyTest {
 		
 	@Test
 	public void test(){
-		System.out.println("##############################");
-		printElements(model);
-		System.out.println();
+		Assert.assertTrue(false);
 	}
 	
-	private void printElements(EObject root){
-		for(EObject obj : root.eContents()){
-			System.out.println(obj);
-			printElements(obj);
-		}
-	}
-	
-	public static void main(String[] args){
-		System.out.println(EcoreUtil.generateUUID());
+	@Test
+	public void test2(){
+
 	}
 }

@@ -54,6 +54,7 @@ public class EMFRunListener extends RunListener {
 	    PrintWriter pw = new PrintWriter(sw);
 	    throwable.printStackTrace(new PrintWriter(sw));
 		
+	    // TODO filter stack trace ?
 		if(throwable instanceof AssertionFailedError){
 			testResult.setFailure(sw.toString());
 		} else {

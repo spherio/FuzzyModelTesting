@@ -13,7 +13,7 @@
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <package
-            uri="http://org/eclipse/emf/emfstore/fuzzy/emfdataprovider/config"
+            uri="http://org/eclipse/emf/emfstore/fuzzy/config"
             class="org.eclipse.emf.emfstore.fuzzy.config.ConfigPackage"
             genModel="model/config.genmodel"/>
    </extension>

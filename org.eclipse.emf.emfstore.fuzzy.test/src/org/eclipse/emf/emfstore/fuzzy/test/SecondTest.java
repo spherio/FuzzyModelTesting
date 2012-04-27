@@ -18,12 +18,12 @@ public class SecondTest {
 	private EObject obj;
 	
 	@Test
-	public void secondTest(){
-		System.out.println(obj);
+	public void secondTest(){		
+		throw new RuntimeException("test");
 	}
 	
-	@Test
-	public void fail(){
-		Assert.assertTrue(false);
-	}
+//	@Test
+//	public void fail(){
+//		Assert.assertTrue(false);
+//	}
 }

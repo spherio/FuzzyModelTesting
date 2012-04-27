@@ -1,7 +1,16 @@
 package org.eclipse.emf.emfstore.fuzzy;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
+import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.emfstore.client.model.ProjectSpace;
 import org.eclipse.emf.emfstore.fuzzy.config.TestConfig;
 import org.eclipse.emf.emfstore.fuzzy.config.TestDiff;
@@ -16,6 +25,8 @@ public class FuzzyUtil {
 	
 	public static final String CONFIG_FOLDER = "D:/downloads/fuzzy";
 	
+	public static final String FUZZY_FOLDER = "fuzzy";
+	
 	public static final String PATH_SEPARATOR = System.getProperty("file.separator");
 
 	public static final String XML_SUFFIX = ".xml";
@@ -25,6 +36,17 @@ public class FuzzyUtil {
 	public static final String CONFIG_FILE = "config.xml";
 	
 	public static final String RUNS_FILE = "runs.txt";
+	
+	public static final String DIFF_FILE = FuzzyUtil.CONFIG_FOLDER + "diff" + FuzzyUtil.XML_SUFFIX;
+	
+	public static final String PROPERTIES_FILE = "fuzzy.properties";
+	
+	public static final String PROP_PRE = "fuzzy";
+	
+	private static final AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(new ComposedAdapterFactory(
+			ComposedAdapterFactory.Descriptor.Registry.INSTANCE), new BasicCommandStack());
+
+	private static Properties properties;
 	
 	public static TestConfig getTestConfig(Resource resource, TestClass testClass){
 		// TODO modify/check to be more robust against wrong input
@@ -41,6 +63,14 @@ public class FuzzyUtil {
 		
 		throw new IllegalArgumentException("No fitting testconfig for " + 
 					testClass.getName() + " in " + resource.getURI() + " found.");		
+	}
+	
+	public static boolean resourceExists(Resource resource){
+		return resource.getResourceSet().getURIConverter().exists(resource.getURI(), null);
+	}
+	
+	public static Resource createResource(String fileNameURI){
+		return editingDomain.createResource(fileNameURI);
 	}
 	
 	public static TestResult getValidTestResult(TestDiff diff){
@@ -71,4 +101,30 @@ public class FuzzyUtil {
 		projectSpace.setProjectDescription("Project created by EMFDataProvider");	
 		return projectSpace;
 	}	
+	
+	public static String getProperty(String key, String defaultValue){
+		initProperties();
+		return properties.getProperty(PROP_PRE + key, defaultValue);
+	}
+	
+	private static void initProperties(){
+		if(properties != null){
+			return;
+		}
+		
+		File file = new File(PROPERTIES_FILE);
+		properties = new Properties();
+		 
+		if(file.exists()){
+			try {
+				FileInputStream fs = new FileInputStream(file);
+				BufferedInputStream bis = new BufferedInputStream(fs);
+				properties.load(bis);
+				bis.close();
+				fs.close();
+			} catch (IOException e) {
+				throw new RuntimeException("Could not load properties from " + file.getAbsolutePath(), e);
+			}
+		}
+	}
 }
