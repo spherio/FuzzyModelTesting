@@ -3,14 +3,17 @@ package org.eclipse.emf.emfstore.fuzzy.diff;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.emfstore.fuzzy.FuzzyUtil;
+import org.eclipse.emf.emfstore.fuzzy.config.TestConfig;
 import org.eclipse.emf.emfstore.fuzzy.config.TestRun;
 
 // TODO use secure auth
@@ -54,7 +57,7 @@ public class HudsonTestRunProvider extends TestRunProvider {
 		hudsonUrl = FuzzyUtil.getProperty(PROP_HUDSON + PROP_URL, "http://localhost") + ":" + 
 				FuzzyUtil.getProperty(PROP_HUDSON + PROP_PORT, "8080") + "/";
 		
-		jobUrl = hudsonUrl + "job/" + FuzzyUtil.getProperty(PROP_HUDSON + PROP_JOB, "Test") + "/";
+		jobUrl = hudsonUrl + "job/" + FuzzyUtil.getProperty(PROP_HUDSON + PROP_JOB, "Explorer") + "/";
 	}
 	
 	private int getLastValidBuildNumber(int maxBuildNumber) throws MalformedURLException, DocumentException{
@@ -93,12 +96,12 @@ public class HudsonTestRunProvider extends TestRunProvider {
 		
 		TestRun[] runs = new TestRun[2];
 		
-		Resource resource = getResource(firstBuildNumber);		
+		Resource resource = getTestRunResource(firstBuildNumber);		
 		resource.load(null);
 		
 		runs[0] = getTestRun(resource);
 		
-		resource = getResource(secondBuildNumber);		
+		resource = getTestRunResource(secondBuildNumber);		
 		resource.load(null);
 		
 		runs[1] = getTestRun(resource);
@@ -106,9 +109,26 @@ public class HudsonTestRunProvider extends TestRunProvider {
 		return runs;
 	}
 	
-	private Resource getResource(int buildNumber){
+	private Resource getTestRunResource(int buildNumber){
 		return FuzzyUtil.createResource(jobUrl + buildNumber + "/artifact/" +
-				FuzzyUtil.FUZZY_FOLDER + "/" + config.getId() + FuzzyUtil.XML_SUFFIX);
+				FuzzyUtil.FUZZY_FOLDER + FuzzyUtil.RUN_FOLDER + config.getId() + FuzzyUtil.XML_SUFFIX);
+	}
+	
+	public List<TestConfig> getAllConfigs(){
+		Resource resource = FuzzyUtil.createResource(jobUrl + firstBuildNumber + "/artifact/" +
+				FuzzyUtil.FUZZY_FOLDER + "/" + FuzzyUtil.TEST_CONFIG_FILE);
+		try {
+			resource.load(null);
+		} catch (IOException e) {
+			throw new RuntimeException("Could not load configs file!", e);
+		}
+		List<TestConfig> configs = new ArrayList<TestConfig>();
+		for(EObject obj : resource.getContents()){
+			if (obj instanceof TestConfig) {
+				configs.add((TestConfig) obj);
+			}
+		}
+		return configs;
 	}
 
 }
