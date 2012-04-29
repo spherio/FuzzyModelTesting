@@ -17,6 +17,7 @@ import org.eclipse.emf.emfstore.fuzzy.config.TestConfig;
 import org.eclipse.emf.emfstore.fuzzy.config.TestDiff;
 import org.eclipse.emf.emfstore.fuzzy.config.TestResult;
 import org.eclipse.emf.emfstore.fuzzy.config.TestRun;
+import org.eclipse.emf.emfstore.fuzzy.diff.HudsonTestRunProvider;
 import org.eclipse.emf.emfstore.fuzzy.junit.FuzzyDataProvider;
 import org.eclipse.emf.emfstore.fuzzy.junit.Test;
 import org.eclipse.emf.emfstore.modelmutator.api.ModelMutator;
@@ -46,9 +47,7 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 	private String configFile;
 	
 	public static final String PROP_EMFDATAPROVIDER = ".emfdataprovider";
-	
-	public static final String PROP_FILTERTESTS = ".filterTests";
-	
+		
 	public static final String PROP_CONFIGS_FILE = ".configsFile";
 	
 	@Override
@@ -157,7 +156,7 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 			return null;
 		} 
 		
-		Resource diffResource = FuzzyUtil.createResource(FuzzyUtil.DIFF_FILE);
+		Resource diffResource = HudsonTestRunProvider.getDiffResource();
 		
 		try {
 			diffResource.load(null);
@@ -185,7 +184,12 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 	}
 	
 	private void fillProperties(){		
-		filterTests = Boolean.parseBoolean(FuzzyUtil.getProperty(PROP_EMFDATAPROVIDER + PROP_FILTERTESTS, "false"));
+		String filterTests = System.getProperty("filterTests");
+		if(filterTests == null){
+			this.filterTests = false;
+		} else {
+			this.filterTests = Boolean.parseBoolean(filterTests);
+		}
 		configFile = FuzzyUtil.getProperty(PROP_EMFDATAPROVIDER + PROP_CONFIGS_FILE, FuzzyUtil.TEST_CONFIG_PATH);	
 	}
 }

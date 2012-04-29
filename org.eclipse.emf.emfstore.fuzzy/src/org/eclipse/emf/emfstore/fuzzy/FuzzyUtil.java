@@ -1,6 +1,5 @@
 package org.eclipse.emf.emfstore.fuzzy;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -106,7 +105,7 @@ public class FuzzyUtil {
 		initProperties();
 		return properties.getProperty(PROP_PRE + key, defaultValue);
 	}
-	
+		
 	private static void initProperties(){
 		if(properties != null){
 			return;
@@ -117,10 +116,8 @@ public class FuzzyUtil {
 		 
 		if(file.exists()){
 			try {
-				FileInputStream fs = new FileInputStream(file);
-				BufferedInputStream bis = new BufferedInputStream(fs);
-				properties.load(bis);
-				bis.close();
+				FileInputStream fs = new FileInputStream(file);				
+				properties.load(fs);				
 				fs.close();
 			} catch (IOException e) {
 				throw new RuntimeException("Could not load properties from " + file.getAbsolutePath(), e);

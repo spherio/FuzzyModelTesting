@@ -24,7 +24,7 @@ public class HudsonTestRunProvider extends TestRunProvider {
 	private String hudsonUrl;
 		
 	private String jobUrl;
-	
+		
 	private int firstBuildNumber;
 	
 	private int secondBuildNumber;
@@ -37,12 +37,16 @@ public class HudsonTestRunProvider extends TestRunProvider {
 	
 	public static final String PROP_JOB = ".job";
 	
+	public static final String PROP_DIFF_JOB = ".diffjob";
+	
+	public static final String LAST_COMPLETED_BUILD = "lastCompletedBuild";
+	
 	public static final String[] VALID_STATES = new String[]{"SUCCESS", "UNSTABLE"};
 	
 	public HudsonTestRunProvider() throws DocumentException, IOException{
 		initProperties();
 		
-		firstBuildNumber = Integer.parseInt(getFirstElementValue(jobUrl + "lastCompletedBuild" + "/api/xml?tree=number"));		
+		firstBuildNumber = Integer.parseInt(getFirstElementValue(jobUrl + LAST_COMPLETED_BUILD + "/api/xml?tree=number"));		
 		secondBuildNumber = getLastValidBuildNumber(firstBuildNumber - 1);
 	}
 	
@@ -54,10 +58,13 @@ public class HudsonTestRunProvider extends TestRunProvider {
 	}
 	
 	private void initProperties(){
-		hudsonUrl = FuzzyUtil.getProperty(PROP_HUDSON + PROP_URL, "http://localhost") + ":" + 
-				FuzzyUtil.getProperty(PROP_HUDSON + PROP_PORT, "8080") + "/";
-		
+		hudsonUrl = getHudsonUrl();		
 		jobUrl = hudsonUrl + "job/" + FuzzyUtil.getProperty(PROP_HUDSON + PROP_JOB, "Explorer") + "/";
+	}
+	
+	private static String getHudsonUrl(){
+		return FuzzyUtil.getProperty(PROP_HUDSON + PROP_URL, "http://localhost") + ":" + 
+				FuzzyUtil.getProperty(PROP_HUDSON + PROP_PORT, "8080") + "/";
 	}
 	
 	private int getLastValidBuildNumber(int maxBuildNumber) throws MalformedURLException, DocumentException{
@@ -130,5 +137,9 @@ public class HudsonTestRunProvider extends TestRunProvider {
 		}
 		return configs;
 	}
-
+	
+	public static Resource getDiffResource(){
+		String diffJobUrl = getHudsonUrl() + "job/" + FuzzyUtil.getProperty(PROP_HUDSON + PROP_DIFF_JOB, "Diff") + "/";
+		return FuzzyUtil.createResource(diffJobUrl + LAST_COMPLETED_BUILD + "/artifact/" + FuzzyUtil.FUZZY_FOLDER + "diff" + FuzzyUtil.XML_SUFFIX);
+	}
 }
