@@ -62,6 +62,18 @@ public class FuzzyUtil {
 					testClass.getName() + " in " + resource.getURI() + " found.");		
 	}
 	
+	public static boolean containsConfig(Resource resource, TestConfig config){
+		for(EObject obj : resource.getContents()){
+			if (obj instanceof TestConfig) {
+				TestConfig c = (TestConfig) obj;
+				if(c.getId().equals(config.getId())){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	public static boolean resourceExists(Resource resource){
 		return resource.getResourceSet().getURIConverter().exists(resource.getURI(), null);
 	}

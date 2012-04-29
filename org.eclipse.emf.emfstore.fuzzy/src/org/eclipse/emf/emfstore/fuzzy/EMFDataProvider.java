@@ -3,7 +3,6 @@ package org.eclipse.emf.emfstore.fuzzy;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -68,7 +67,8 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 		// get the testconfig fitting to the current testclass
 		config = FuzzyUtil.getTestConfig(loadResource, testClass);
 		
-		saveConfigFile(loadResource.getContents());
+		// add the config to the configs file
+		addToConfigFile(loadResource.getContents());
 								
 		// init variables
 		random = new Random(config.getSeed());
@@ -86,16 +86,19 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 		testRun.setTime(new Date());
 	}
 	
-	private void saveConfigFile(EList<EObject> contents) {
+	private void addToConfigFile(EList<EObject> contents) {
 		Resource resource = FuzzyUtil.createResource(FuzzyUtil.ARTIFACT_FOLDER + FuzzyUtil.TEST_CONFIG_FILE);
-		if(!FuzzyUtil.resourceExists(resource)){			
-			resource.getContents().addAll(contents);
-			try {
-				resource.save(null);
-			} catch (IOException e) {
-				throw new RuntimeException("Could not save configs!", e);
+		try {
+			if(FuzzyUtil.resourceExists(resource)){
+				resource.load(null);
 			}
-		}
+			if(!FuzzyUtil.containsConfig(resource, config)){
+				resource.getContents().add(config);
+				resource.save(null);
+			}
+		} catch (IOException e) {
+			throw new RuntimeException("Could not save config!", e);
+		}		
 	}
 
 	@Override
@@ -128,7 +131,7 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 		try {
 			runResource.save(null);
 		} catch (IOException e) {
-			throw new RuntimeException("Could not save the config after running!", e);
+			throw new RuntimeException("Could not save the run result after running!", e);
 		}
 	}
 	
