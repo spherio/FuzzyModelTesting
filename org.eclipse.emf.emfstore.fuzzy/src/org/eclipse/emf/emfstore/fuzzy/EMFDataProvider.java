@@ -155,7 +155,7 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 		if(!filterTests){
 			return null;
 		} 
-		
+						
 		Resource diffResource = HudsonTestRunProvider.getDiffResource();
 		
 		try {
@@ -172,6 +172,7 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 				if(diff.getConfig().getId().equals(config.getId())){
 					TestResult result = FuzzyUtil.getValidTestResult(diff);
 					tests.add(new Test(result.getTestName(), result.getSeedCount()));
+					System.out.println("######################################" + result.getTestName());
 				}
 			}
 		}
