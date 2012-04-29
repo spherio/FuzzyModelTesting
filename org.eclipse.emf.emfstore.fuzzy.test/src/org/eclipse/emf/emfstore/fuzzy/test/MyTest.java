@@ -1,5 +1,7 @@
 package org.eclipse.emf.emfstore.fuzzy.test;
 
+import java.util.Random;
+
 import junit.framework.Assert;
 
 import org.eclipse.emf.ecore.EObject;
@@ -20,11 +22,15 @@ public class MyTest {
 		
 	@Test
 	public void test(){
-		Assert.assertTrue(false);
+		if(new Random().nextInt(2) == 0){
+			Assert.assertTrue(false);
+		}
 	}
 	
 	@Test
 	public void test2(){
-
+		if(new Random().nextInt(2) == 0){
+			Assert.assertTrue(false);
+		}
 	}
 }

@@ -1,5 +1,7 @@
 package org.eclipse.emf.emfstore.fuzzy.test;
 
+import java.util.Random;
+
 import junit.framework.Assert;
 
 import org.eclipse.emf.ecore.EObject;
@@ -18,12 +20,16 @@ public class SecondTest {
 	private EObject obj;
 	
 	@Test
-	public void secondTest(){		
-		throw new RuntimeException("test");
+	public void secondTest(){	
+		if(new Random().nextInt(2) == 0){
+			throw new RuntimeException("test");
+		}
 	}
 	
-//	@Test
-//	public void fail(){
-//		Assert.assertTrue(false);
-//	}
+	@Test
+	public void fail(){
+		if(new Random().nextInt(2) == 0){
+			Assert.assertTrue(false);
+		}
+	}
 }
