@@ -152,8 +152,6 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 	
 	@Override
 	public List<Test> getTestsToRun() {
-		System.out.println("################ filterTests: " + filterTests);
-		System.out.println(System.getProperty("filterTests"));
 		if(!filterTests){
 			return null;
 		} 
@@ -175,7 +173,6 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 				if(diff.getConfig().getId().equals(config.getId())){
 					TestResult result = FuzzyUtil.getValidTestResult(diff);
 					tests.add(new Test(result.getTestName(), result.getSeedCount()));
-					System.out.println("######################################" + result.getTestName());
 				}
 			}
 		}
