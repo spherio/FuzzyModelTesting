@@ -152,9 +152,12 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 	
 	@Override
 	public List<Test> getTestsToRun() {
+		System.out.println("################ filterTests: " + filterTests);
+		System.out.println(System.getProperty("filterTests"));
 		if(!filterTests){
 			return null;
 		} 
+		
 						
 		Resource diffResource = HudsonTestRunProvider.getDiffResource();
 		
