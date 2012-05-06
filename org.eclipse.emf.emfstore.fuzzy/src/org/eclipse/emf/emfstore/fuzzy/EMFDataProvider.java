@@ -26,6 +26,16 @@ import org.eclipse.emf.emfstore.modelmutator.api.ModelMutatorUtil;
 import org.junit.runner.notification.RunListener;
 import org.junit.runners.model.TestClass;
 
+/**
+ * This implementation of a {@link FuzzyDataProvider} provides generated models using the functionality of {@link ModelMutator}.
+ * <br><br>
+ * The run of a test is based on a {@link TestConfig}, defining model etc.
+ * <br><br>
+ * During the run it records {@link TestResult}s to create a {@link TestRun} for reporting purpose.
+ *  
+ * @author Julian Sommerfeldt
+ *
+ */
 public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 	
 	private Random random;
@@ -52,7 +62,7 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 	
 	@Override
 	public void init(){
-		
+		// fill properties like the config file
 		fillProperties();
 				
 		// load testconfig from file
@@ -67,7 +77,7 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 		config = FuzzyUtil.getTestConfig(loadResource, testClass);
 		
 		// add the config to the configs file
-		addToConfigFile(loadResource.getContents());
+		addToConfigFile();
 								
 		// init variables
 		random = new Random(config.getSeed());
@@ -85,7 +95,10 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 		testRun.setTime(new Date());
 	}
 	
-	private void addToConfigFile(EList<EObject> contents) {
+	/**
+	 * Add the config to the file containing all configs.
+	 */
+	private void addToConfigFile() {
 		Resource resource = FuzzyUtil.createResource(FuzzyUtil.ARTIFACT_FOLDER + FuzzyUtil.TEST_CONFIG_FILE);
 		try {
 			if(FuzzyUtil.resourceExists(resource)){
@@ -119,11 +132,11 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 	@SuppressWarnings("unchecked")
 	public void finish(){
 		// create run resource
-		Resource runResource = FuzzyUtil.createResource(FuzzyUtil.ARTIFACT_FOLDER + FuzzyUtil.RUN_FOLDER + config.getId() + FuzzyUtil.XML_SUFFIX);
+		Resource runResource = FuzzyUtil.createResource(FuzzyUtil.ARTIFACT_FOLDER + FuzzyUtil.RUN_FOLDER + config.getId() + FuzzyUtil.FILE_SUFFIX);
 		EList<EObject> contents = runResource.getContents();
 		contents.add(testRun);
 		contents.add(config);
-		
+				
 		// add testresults of testrun
 		contents.addAll(testRun.getResults());
 		
@@ -155,8 +168,7 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 		if(!filterTests){
 			return null;
 		} 
-		
-						
+								
 		Resource diffResource = HudsonTestRunProvider.getDiffResource();
 		
 		try {
@@ -180,6 +192,9 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 		return tests;
 	}
 	
+	/**
+	 * @return The current seed used to create the model
+	 */
 	public int getCurrentSeedCount(){
 		return seedCount;
 	}

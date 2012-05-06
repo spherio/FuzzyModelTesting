@@ -10,14 +10,23 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.emfstore.fuzzy.FuzzyUtil;
 import org.eclipse.emf.emfstore.fuzzy.config.ConfigFactory;
+import org.eclipse.emf.emfstore.fuzzy.config.DiffReport;
 import org.eclipse.emf.emfstore.fuzzy.config.TestConfig;
 import org.eclipse.emf.emfstore.fuzzy.config.TestDiff;
 import org.eclipse.emf.emfstore.fuzzy.config.TestResult;
 import org.eclipse.emf.emfstore.fuzzy.config.TestRun;
 
+/**
+ * Generates {@link TestDiff}s out of {@link TestRun}.
+ * 
+ * @author Julian Sommerfeldt
+ *
+ */
 public class DiffGenerator {
 		
 	private EList<EObject> diffContents;
+	
+	private DiffReport diffReport;
 	
 	private Resource diffResource;
 	
@@ -38,8 +47,10 @@ public class DiffGenerator {
 			} catch (IOException e) {
 				throw new RuntimeException("Could not load resource: " + diffResource.getURI(), e);
 			}			
-		}
+		} 
 		
+		// TODO use diffreport in this class
+		diffReport = getDiffReport(diffResource);
 		diffContents = diffResource.getContents();
 	}
 	
@@ -176,5 +187,14 @@ public class DiffGenerator {
 			}
 		}
 		return null;
+	}
+	
+	private static DiffReport getDiffReport(Resource resource){
+		for(EObject obj : resource.getContents()){
+			if (obj instanceof DiffReport) {
+				return (DiffReport) obj;					
+			}
+		}
+		return ConfigFactory.eINSTANCE.createDiffReport();
 	}
 }

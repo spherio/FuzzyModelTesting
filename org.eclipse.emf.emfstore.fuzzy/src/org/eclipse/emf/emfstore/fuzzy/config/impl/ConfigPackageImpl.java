@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.emf.emfstore.fuzzy.config.ConfigFactory;
 import org.eclipse.emf.emfstore.fuzzy.config.ConfigPackage;
+import org.eclipse.emf.emfstore.fuzzy.config.DiffReport;
 import org.eclipse.emf.emfstore.fuzzy.config.TestConfig;
 import org.eclipse.emf.emfstore.fuzzy.config.TestDiff;
 import org.eclipse.emf.emfstore.fuzzy.config.TestResult;
@@ -49,6 +50,12 @@ public class ConfigPackageImpl extends EPackageImpl implements ConfigPackage {
 	 * @generated
 	 */
 	private EClass testDiffEClass = null;
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass diffReportEClass = null;
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
 	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
@@ -304,6 +311,24 @@ public class ConfigPackageImpl extends EPackageImpl implements ConfigPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getDiffReport() {
+		return diffReportEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getDiffReport_Diffs() {
+		return (EReference)diffReportEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public ConfigFactory getConfigFactory() {
 		return (ConfigFactory)getEFactoryInstance();
 	}
@@ -351,6 +376,9 @@ public class ConfigPackageImpl extends EPackageImpl implements ConfigPackage {
 		createEReference(testDiffEClass, TEST_DIFF__CONFIG);
 		createEReference(testDiffEClass, TEST_DIFF__OLD_RESULT);
 		createEReference(testDiffEClass, TEST_DIFF__NEW_RESULT);
+
+		diffReportEClass = createEClass(DIFF_REPORT);
+		createEReference(diffReportEClass, DIFF_REPORT__DIFFS);
 	}
 
 	/**
@@ -387,9 +415,9 @@ public class ConfigPackageImpl extends EPackageImpl implements ConfigPackage {
 		initEAttribute(getTestConfig_Id(), ecorePackage.getEString(), "id", null, 0, 1, TestConfig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(testRunEClass, TestRun.class, "TestRun", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getTestRun_Config(), this.getTestConfig(), null, "config", null, 0, 1, TestRun.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTestRun_Config(), this.getTestConfig(), null, "config", null, 0, 1, TestRun.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTestRun_Time(), ecorePackage.getEDate(), "time", null, 0, 1, TestRun.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getTestRun_Results(), this.getTestResult(), null, "results", null, 0, -1, TestRun.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTestRun_Results(), this.getTestResult(), null, "results", null, 0, -1, TestRun.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(testResultEClass, TestResult.class, "TestResult", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getTestResult_SeedCount(), ecorePackage.getEInt(), "seedCount", null, 0, 1, TestResult.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -401,8 +429,11 @@ public class ConfigPackageImpl extends EPackageImpl implements ConfigPackage {
 		initEClass(testDiffEClass, TestDiff.class, "TestDiff", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getTestDiff_LastUpdate(), ecorePackage.getEDate(), "lastUpdate", null, 0, 1, TestDiff.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getTestDiff_Config(), this.getTestConfig(), null, "config", null, 0, 1, TestDiff.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getTestDiff_OldResult(), this.getTestResult(), null, "oldResult", null, 0, 1, TestDiff.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getTestDiff_NewResult(), this.getTestResult(), null, "newResult", null, 0, 1, TestDiff.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTestDiff_OldResult(), this.getTestResult(), null, "oldResult", null, 0, 1, TestDiff.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTestDiff_NewResult(), this.getTestResult(), null, "newResult", null, 0, 1, TestDiff.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(diffReportEClass, DiffReport.class, "DiffReport", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getDiffReport_Diffs(), this.getTestDiff(), null, "diffs", null, 0, -1, DiffReport.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

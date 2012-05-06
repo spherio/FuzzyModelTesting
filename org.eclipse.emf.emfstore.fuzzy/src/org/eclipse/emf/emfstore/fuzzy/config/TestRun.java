@@ -32,26 +32,26 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface TestRun extends EObject {
 	/**
-	 * Returns the value of the '<em><b>Config</b></em>' reference.
+	 * Returns the value of the '<em><b>Config</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Config</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Config</em>' reference.
+	 * @return the value of the '<em>Config</em>' containment reference.
 	 * @see #setConfig(TestConfig)
 	 * @see org.eclipse.emf.emfstore.fuzzy.config.ConfigPackage#getTestRun_Config()
-	 * @model
+	 * @model containment="true"
 	 * @generated
 	 */
 	TestConfig getConfig();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.emf.emfstore.fuzzy.config.TestRun#getConfig <em>Config</em>}' reference.
+	 * Sets the value of the '{@link org.eclipse.emf.emfstore.fuzzy.config.TestRun#getConfig <em>Config</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Config</em>' reference.
+	 * @param value the new value of the '<em>Config</em>' containment reference.
 	 * @see #getConfig()
 	 * @generated
 	 */
@@ -84,7 +84,7 @@ public interface TestRun extends EObject {
 	void setTime(Date value);
 
 	/**
-	 * Returns the value of the '<em><b>Results</b></em>' reference list.
+	 * Returns the value of the '<em><b>Results</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.emf.emfstore.fuzzy.config.TestResult}.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -92,9 +92,9 @@ public interface TestRun extends EObject {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Results</em>' reference list.
+	 * @return the value of the '<em>Results</em>' containment reference list.
 	 * @see org.eclipse.emf.emfstore.fuzzy.config.ConfigPackage#getTestRun_Results()
-	 * @model type="org.eclipse.emf.emfstore.fuzzy.config.TestResult"
+	 * @model type="org.eclipse.emf.emfstore.fuzzy.config.TestResult" containment="true"
 	 * @generated
 	 */
 	EList getResults();

@@ -10,6 +10,7 @@ import java.util.Date;
 
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
@@ -69,7 +70,7 @@ public class TestDiffImpl extends EObjectImpl implements TestDiff {
 	protected TestConfig config;
 
 	/**
-	 * The cached value of the '{@link #getOldResult() <em>Old Result</em>}' reference.
+	 * The cached value of the '{@link #getOldResult() <em>Old Result</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getOldResult()
@@ -79,7 +80,7 @@ public class TestDiffImpl extends EObjectImpl implements TestDiff {
 	protected TestResult oldResult;
 
 	/**
-	 * The cached value of the '{@link #getNewResult() <em>New Result</em>}' reference.
+	 * The cached value of the '{@link #getNewResult() <em>New Result</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getNewResult()
@@ -171,14 +172,6 @@ public class TestDiffImpl extends EObjectImpl implements TestDiff {
 	 * @generated
 	 */
 	public TestResult getOldResult() {
-		if (oldResult != null && oldResult.eIsProxy()) {
-			InternalEObject oldOldResult = (InternalEObject)oldResult;
-			oldResult = (TestResult)eResolveProxy(oldOldResult);
-			if (oldResult != oldOldResult) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ConfigPackage.TEST_DIFF__OLD_RESULT, oldOldResult, oldResult));
-			}
-		}
 		return oldResult;
 	}
 
@@ -187,8 +180,14 @@ public class TestDiffImpl extends EObjectImpl implements TestDiff {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public TestResult basicGetOldResult() {
-		return oldResult;
+	public NotificationChain basicSetOldResult(TestResult newOldResult, NotificationChain msgs) {
+		TestResult oldOldResult = oldResult;
+		oldResult = newOldResult;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ConfigPackage.TEST_DIFF__OLD_RESULT, oldOldResult, newOldResult);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
 	}
 
 	/**
@@ -197,10 +196,17 @@ public class TestDiffImpl extends EObjectImpl implements TestDiff {
 	 * @generated
 	 */
 	public void setOldResult(TestResult newOldResult) {
-		TestResult oldOldResult = oldResult;
-		oldResult = newOldResult;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ConfigPackage.TEST_DIFF__OLD_RESULT, oldOldResult, oldResult));
+		if (newOldResult != oldResult) {
+			NotificationChain msgs = null;
+			if (oldResult != null)
+				msgs = ((InternalEObject)oldResult).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ConfigPackage.TEST_DIFF__OLD_RESULT, null, msgs);
+			if (newOldResult != null)
+				msgs = ((InternalEObject)newOldResult).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ConfigPackage.TEST_DIFF__OLD_RESULT, null, msgs);
+			msgs = basicSetOldResult(newOldResult, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ConfigPackage.TEST_DIFF__OLD_RESULT, newOldResult, newOldResult));
 	}
 
 	/**
@@ -209,14 +215,6 @@ public class TestDiffImpl extends EObjectImpl implements TestDiff {
 	 * @generated
 	 */
 	public TestResult getNewResult() {
-		if (newResult != null && newResult.eIsProxy()) {
-			InternalEObject oldNewResult = (InternalEObject)newResult;
-			newResult = (TestResult)eResolveProxy(oldNewResult);
-			if (newResult != oldNewResult) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ConfigPackage.TEST_DIFF__NEW_RESULT, oldNewResult, newResult));
-			}
-		}
 		return newResult;
 	}
 
@@ -225,8 +223,14 @@ public class TestDiffImpl extends EObjectImpl implements TestDiff {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public TestResult basicGetNewResult() {
-		return newResult;
+	public NotificationChain basicSetNewResult(TestResult newNewResult, NotificationChain msgs) {
+		TestResult oldNewResult = newResult;
+		newResult = newNewResult;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ConfigPackage.TEST_DIFF__NEW_RESULT, oldNewResult, newNewResult);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
 	}
 
 	/**
@@ -235,10 +239,32 @@ public class TestDiffImpl extends EObjectImpl implements TestDiff {
 	 * @generated
 	 */
 	public void setNewResult(TestResult newNewResult) {
-		TestResult oldNewResult = newResult;
-		newResult = newNewResult;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ConfigPackage.TEST_DIFF__NEW_RESULT, oldNewResult, newResult));
+		if (newNewResult != newResult) {
+			NotificationChain msgs = null;
+			if (newResult != null)
+				msgs = ((InternalEObject)newResult).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ConfigPackage.TEST_DIFF__NEW_RESULT, null, msgs);
+			if (newNewResult != null)
+				msgs = ((InternalEObject)newNewResult).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ConfigPackage.TEST_DIFF__NEW_RESULT, null, msgs);
+			msgs = basicSetNewResult(newNewResult, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ConfigPackage.TEST_DIFF__NEW_RESULT, newNewResult, newNewResult));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case ConfigPackage.TEST_DIFF__OLD_RESULT:
+				return basicSetOldResult(null, msgs);
+			case ConfigPackage.TEST_DIFF__NEW_RESULT:
+				return basicSetNewResult(null, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**
@@ -254,11 +280,9 @@ public class TestDiffImpl extends EObjectImpl implements TestDiff {
 				if (resolve) return getConfig();
 				return basicGetConfig();
 			case ConfigPackage.TEST_DIFF__OLD_RESULT:
-				if (resolve) return getOldResult();
-				return basicGetOldResult();
+				return getOldResult();
 			case ConfigPackage.TEST_DIFF__NEW_RESULT:
-				if (resolve) return getNewResult();
-				return basicGetNewResult();
+				return getNewResult();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}

@@ -22,15 +22,20 @@ public class MyTest {
 		
 	@Test
 	public void test(){
-		if(new Random().nextInt(2) == 0){
-			Assert.assertTrue(false);
-		}
+		printElements(model);
 	}
 	
-	@Test
-	public void test2(){
-		if(new Random().nextInt(2) == 0){
-			Assert.assertTrue(false);
+//	@Test
+//	public void test2(){
+//		if(new Random().nextInt(2) == 0){
+//			Assert.assertTrue(false);
+//		}
+//	}
+	
+	private void printElements(EObject root){
+		for(EObject obj : root.eContents()){
+			System.out.println(obj);
+			printElements(obj);
 		}
 	}
 }

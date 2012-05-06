@@ -15,7 +15,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TestRun">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="config" eType="#//TestConfig"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="config" eType="#//TestConfig"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="time" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="results" upperBound="-1"
         eType="#//TestResult" containment="true"/>
@@ -30,7 +31,13 @@
   <eClassifiers xsi:type="ecore:EClass" name="TestDiff">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lastUpdate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="config" eType="#//TestConfig"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="oldResult" eType="#//TestResult"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="newResult" eType="#//TestResult"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="oldResult" eType="#//TestResult"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="newResult" eType="#//TestResult"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DiffReport">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="diffs" upperBound="-1"
+        eType="#//TestDiff" containment="true"/>
   </eClassifiers>
 </ecore:EPackage>

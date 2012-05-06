@@ -14,6 +14,12 @@ import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
 
+/**
+ * {@link RunListener} used to create the report of a run of the {@link EMFDataProvider}.
+ * 
+ * @author Julian Sommerfeldt
+ *
+ */
 public class EMFRunListener extends RunListener {
 	
 	private TestRun testRun;

@@ -63,6 +63,7 @@ public class ConfigFactoryImpl extends EFactoryImpl implements ConfigFactory {
 			case ConfigPackage.TEST_RUN: return createTestRun();
 			case ConfigPackage.TEST_RESULT: return createTestResult();
 			case ConfigPackage.TEST_DIFF: return createTestDiff();
+			case ConfigPackage.DIFF_REPORT: return createDiffReport();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -106,6 +107,16 @@ public class ConfigFactoryImpl extends EFactoryImpl implements ConfigFactory {
 	public TestDiff createTestDiff() {
 		TestDiffImpl testDiff = new TestDiffImpl();
 		return testDiff;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public DiffReport createDiffReport() {
+		DiffReportImpl diffReport = new DiffReportImpl();
+		return diffReport;
 	}
 
 	/**

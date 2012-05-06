@@ -135,7 +135,7 @@ public interface ConfigPackage extends EPackage {
 	int TEST_RUN = 1;
 
 	/**
-	 * The feature id for the '<em><b>Config</b></em>' reference.
+	 * The feature id for the '<em><b>Config</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -153,7 +153,7 @@ public interface ConfigPackage extends EPackage {
 	int TEST_RUN__TIME = 1;
 
 	/**
-	 * The feature id for the '<em><b>Results</b></em>' reference list.
+	 * The feature id for the '<em><b>Results</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -264,7 +264,7 @@ public interface ConfigPackage extends EPackage {
 	int TEST_DIFF__CONFIG = 1;
 
 	/**
-	 * The feature id for the '<em><b>Old Result</b></em>' reference.
+	 * The feature id for the '<em><b>Old Result</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -273,7 +273,7 @@ public interface ConfigPackage extends EPackage {
 	int TEST_DIFF__OLD_RESULT = 2;
 
 	/**
-	 * The feature id for the '<em><b>New Result</b></em>' reference.
+	 * The feature id for the '<em><b>New Result</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -289,6 +289,34 @@ public interface ConfigPackage extends EPackage {
 	 * @ordered
 	 */
 	int TEST_DIFF_FEATURE_COUNT = 4;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.emf.emfstore.fuzzy.config.impl.DiffReportImpl <em>Diff Report</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.emf.emfstore.fuzzy.config.impl.DiffReportImpl
+	 * @see org.eclipse.emf.emfstore.fuzzy.config.impl.ConfigPackageImpl#getDiffReport()
+	 * @generated
+	 */
+	int DIFF_REPORT = 4;
+
+	/**
+	 * The feature id for the '<em><b>Diffs</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DIFF_REPORT__DIFFS = 0;
+
+	/**
+	 * The number of structural features of the '<em>Diff Report</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DIFF_REPORT_FEATURE_COUNT = 1;
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.emf.emfstore.fuzzy.config.TestConfig <em>Test Config</em>}'.
@@ -366,10 +394,10 @@ public interface ConfigPackage extends EPackage {
 	EClass getTestRun();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.eclipse.emf.emfstore.fuzzy.config.TestRun#getConfig <em>Config</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.eclipse.emf.emfstore.fuzzy.config.TestRun#getConfig <em>Config</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Config</em>'.
+	 * @return the meta object for the containment reference '<em>Config</em>'.
 	 * @see org.eclipse.emf.emfstore.fuzzy.config.TestRun#getConfig()
 	 * @see #getTestRun()
 	 * @generated
@@ -388,10 +416,10 @@ public interface ConfigPackage extends EPackage {
 	EAttribute getTestRun_Time();
 
 	/**
-	 * Returns the meta object for the reference list '{@link org.eclipse.emf.emfstore.fuzzy.config.TestRun#getResults <em>Results</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.emf.emfstore.fuzzy.config.TestRun#getResults <em>Results</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Results</em>'.
+	 * @return the meta object for the containment reference list '<em>Results</em>'.
 	 * @see org.eclipse.emf.emfstore.fuzzy.config.TestRun#getResults()
 	 * @see #getTestRun()
 	 * @generated
@@ -496,10 +524,10 @@ public interface ConfigPackage extends EPackage {
 	EReference getTestDiff_Config();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.eclipse.emf.emfstore.fuzzy.config.TestDiff#getOldResult <em>Old Result</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.eclipse.emf.emfstore.fuzzy.config.TestDiff#getOldResult <em>Old Result</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Old Result</em>'.
+	 * @return the meta object for the containment reference '<em>Old Result</em>'.
 	 * @see org.eclipse.emf.emfstore.fuzzy.config.TestDiff#getOldResult()
 	 * @see #getTestDiff()
 	 * @generated
@@ -507,15 +535,36 @@ public interface ConfigPackage extends EPackage {
 	EReference getTestDiff_OldResult();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.eclipse.emf.emfstore.fuzzy.config.TestDiff#getNewResult <em>New Result</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.eclipse.emf.emfstore.fuzzy.config.TestDiff#getNewResult <em>New Result</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>New Result</em>'.
+	 * @return the meta object for the containment reference '<em>New Result</em>'.
 	 * @see org.eclipse.emf.emfstore.fuzzy.config.TestDiff#getNewResult()
 	 * @see #getTestDiff()
 	 * @generated
 	 */
 	EReference getTestDiff_NewResult();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.emf.emfstore.fuzzy.config.DiffReport <em>Diff Report</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Diff Report</em>'.
+	 * @see org.eclipse.emf.emfstore.fuzzy.config.DiffReport
+	 * @generated
+	 */
+	EClass getDiffReport();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.emf.emfstore.fuzzy.config.DiffReport#getDiffs <em>Diffs</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Diffs</em>'.
+	 * @see org.eclipse.emf.emfstore.fuzzy.config.DiffReport#getDiffs()
+	 * @see #getDiffReport()
+	 * @generated
+	 */
+	EReference getDiffReport_Diffs();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -600,7 +649,7 @@ public interface ConfigPackage extends EPackage {
 		EClass TEST_RUN = eINSTANCE.getTestRun();
 
 		/**
-		 * The meta object literal for the '<em><b>Config</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Config</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -616,7 +665,7 @@ public interface ConfigPackage extends EPackage {
 		EAttribute TEST_RUN__TIME = eINSTANCE.getTestRun_Time();
 
 		/**
-		 * The meta object literal for the '<em><b>Results</b></em>' reference list feature.
+		 * The meta object literal for the '<em><b>Results</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -700,7 +749,7 @@ public interface ConfigPackage extends EPackage {
 		EReference TEST_DIFF__CONFIG = eINSTANCE.getTestDiff_Config();
 
 		/**
-		 * The meta object literal for the '<em><b>Old Result</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Old Result</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -708,12 +757,30 @@ public interface ConfigPackage extends EPackage {
 		EReference TEST_DIFF__OLD_RESULT = eINSTANCE.getTestDiff_OldResult();
 
 		/**
-		 * The meta object literal for the '<em><b>New Result</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>New Result</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EReference TEST_DIFF__NEW_RESULT = eINSTANCE.getTestDiff_NewResult();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.emf.emfstore.fuzzy.config.impl.DiffReportImpl <em>Diff Report</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.emf.emfstore.fuzzy.config.impl.DiffReportImpl
+		 * @see org.eclipse.emf.emfstore.fuzzy.config.impl.ConfigPackageImpl#getDiffReport()
+		 * @generated
+		 */
+		EClass DIFF_REPORT = eINSTANCE.getDiffReport();
+
+		/**
+		 * The meta object literal for the '<em><b>Diffs</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference DIFF_REPORT__DIFFS = eINSTANCE.getDiffReport_Diffs();
 
 	}
 

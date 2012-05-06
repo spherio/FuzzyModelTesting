@@ -5,6 +5,12 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.emfstore.fuzzy.config.TestConfig;
 import org.eclipse.emf.emfstore.fuzzy.config.TestRun;
 
+/**
+ * Abstract TestRunProvider to provide the {@link TestRun}s needed in the {@link DiffGenerator}.
+ * 
+ * @author Julian Sommerfeldt
+ *
+ */
 public abstract class TestRunProvider {
 	
 	protected TestConfig config;

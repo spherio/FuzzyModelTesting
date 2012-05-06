@@ -62,6 +62,15 @@ public interface ConfigFactory extends EFactory {
 	TestDiff createTestDiff();
 
 	/**
+	 * Returns a new object of class '<em>Diff Report</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Diff Report</em>'.
+	 * @generated
+	 */
+	DiffReport createDiffReport();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

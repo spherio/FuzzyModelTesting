@@ -16,6 +16,12 @@ import org.eclipse.emf.emfstore.fuzzy.FuzzyUtil;
 import org.eclipse.emf.emfstore.fuzzy.config.TestConfig;
 import org.eclipse.emf.emfstore.fuzzy.config.TestRun;
 
+/**
+ * An implementation of {@link TestRunProvider} to provide {@link TestRun}s created by the CI-Server Hudson.
+ * 
+ * @author Julian Sommerfeldt
+ *
+ */
 // TODO use secure auth
 public class HudsonTestRunProvider extends TestRunProvider {
 	
@@ -118,7 +124,7 @@ public class HudsonTestRunProvider extends TestRunProvider {
 	
 	private Resource getTestRunResource(int buildNumber){
 		return FuzzyUtil.createResource(jobUrl + buildNumber + "/artifact/" +
-				FuzzyUtil.FUZZY_FOLDER + FuzzyUtil.RUN_FOLDER + config.getId() + FuzzyUtil.XML_SUFFIX);
+				FuzzyUtil.FUZZY_FOLDER + FuzzyUtil.RUN_FOLDER + config.getId() + FuzzyUtil.FILE_SUFFIX);
 	}
 	
 	public List<TestConfig> getAllConfigs(){
@@ -140,6 +146,6 @@ public class HudsonTestRunProvider extends TestRunProvider {
 	
 	public static Resource getDiffResource(){
 		String diffJobUrl = getHudsonUrl() + "job/" + FuzzyUtil.getProperty(PROP_HUDSON + PROP_DIFF_JOB, "Diff") + "/";
-		return FuzzyUtil.createResource(diffJobUrl + LAST_COMPLETED_BUILD + "/artifact/" + FuzzyUtil.FUZZY_FOLDER + "diff" + FuzzyUtil.XML_SUFFIX);
+		return FuzzyUtil.createResource(diffJobUrl + LAST_COMPLETED_BUILD + "/artifact/" + FuzzyUtil.FUZZY_FOLDER + "diff" + FuzzyUtil.FILE_SUFFIX);
 	}
 }

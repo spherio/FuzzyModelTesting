@@ -83,52 +83,52 @@ public interface TestDiff extends EObject {
 	void setConfig(TestConfig value);
 
 	/**
-	 * Returns the value of the '<em><b>Old Result</b></em>' reference.
+	 * Returns the value of the '<em><b>Old Result</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Old Result</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Old Result</em>' reference.
+	 * @return the value of the '<em>Old Result</em>' containment reference.
 	 * @see #setOldResult(TestResult)
 	 * @see org.eclipse.emf.emfstore.fuzzy.config.ConfigPackage#getTestDiff_OldResult()
-	 * @model
+	 * @model containment="true"
 	 * @generated
 	 */
 	TestResult getOldResult();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.emf.emfstore.fuzzy.config.TestDiff#getOldResult <em>Old Result</em>}' reference.
+	 * Sets the value of the '{@link org.eclipse.emf.emfstore.fuzzy.config.TestDiff#getOldResult <em>Old Result</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Old Result</em>' reference.
+	 * @param value the new value of the '<em>Old Result</em>' containment reference.
 	 * @see #getOldResult()
 	 * @generated
 	 */
 	void setOldResult(TestResult value);
 
 	/**
-	 * Returns the value of the '<em><b>New Result</b></em>' reference.
+	 * Returns the value of the '<em><b>New Result</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>New Result</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>New Result</em>' reference.
+	 * @return the value of the '<em>New Result</em>' containment reference.
 	 * @see #setNewResult(TestResult)
 	 * @see org.eclipse.emf.emfstore.fuzzy.config.ConfigPackage#getTestDiff_NewResult()
-	 * @model
+	 * @model containment="true"
 	 * @generated
 	 */
 	TestResult getNewResult();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.emf.emfstore.fuzzy.config.TestDiff#getNewResult <em>New Result</em>}' reference.
+	 * Sets the value of the '{@link org.eclipse.emf.emfstore.fuzzy.config.TestDiff#getNewResult <em>New Result</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>New Result</em>' reference.
+	 * @param value the new value of the '<em>New Result</em>' containment reference.
 	 * @see #getNewResult()
 	 * @generated
 	 */
