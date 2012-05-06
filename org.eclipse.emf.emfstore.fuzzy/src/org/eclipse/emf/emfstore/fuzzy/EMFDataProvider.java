@@ -129,17 +129,11 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 		return projectSpace;	
 	}
 		
-	@SuppressWarnings("unchecked")
 	public void finish(){
 		// create run resource
 		Resource runResource = FuzzyUtil.createResource(FuzzyUtil.ARTIFACT_FOLDER + FuzzyUtil.RUN_FOLDER + config.getId() + FuzzyUtil.FILE_SUFFIX);
-		EList<EObject> contents = runResource.getContents();
-		contents.add(testRun);
-		contents.add(config);
-				
-		// add testresults of testrun
-		contents.addAll(testRun.getResults());
-		
+		runResource.getContents().add(testRun);
+
 		try {
 			runResource.save(null);
 		} catch (IOException e) {

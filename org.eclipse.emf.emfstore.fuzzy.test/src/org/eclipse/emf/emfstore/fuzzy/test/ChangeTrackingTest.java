@@ -36,7 +36,7 @@ public class ChangeTrackingTest {
 	@Data
 	private ProjectSpaceImpl projectSpace;
 	
-	@Test
+//	@Test
 	public void changeTrackingTest(){
 		projectSpace.getOperations().clear();
 		ProjectSpaceImpl copy = (ProjectSpaceImpl) EcoreUtil.copy(projectSpace);		
