@@ -31,6 +31,7 @@ import org.eclipse.emf.emfstore.modelmutator.api.ModelMutatorUtil;
  * @author Eugen Neufeld
  * @author Stephan Köhler
  * @author Philip Achenbach
+ * @author Dmitry Litvinov
  */
 public abstract class AbstractModelMutator {
 
@@ -71,7 +72,7 @@ public abstract class AbstractModelMutator {
 		postMutate();
 	}
 
-	public void changeAttributes(int maxNumber) { //1000 *10
+	public void changeAttributes(int maxNumber) {
 		int currentDepth;
 		List<EObject> parentsInThisDepth;
 		if (!configuration.isDoNotGenerateRoot()) {
@@ -87,7 +88,6 @@ public abstract class AbstractModelMutator {
 		while (currentDepth < configuration.getDepth()) {
 			// for all parent EObjects in this depth
 			for (EObject nextParentEObject : parentsInThisDepth) {
-				//ModelMutatorUtil.setEObjectAttributes(nextParentEObject, configuration.getRandom(), configuration.getExceptionLog(), configuration.isIgnoreAndLog());
 				maxNumber -= changeAttributes(nextParentEObject, maxNumber);
 				if (maxNumber <= 0) {
 					return;
@@ -118,7 +118,7 @@ public abstract class AbstractModelMutator {
 		return maxNumber - numAttrLeft;
 	}
 	
-	public void createEObjects(int maxNumber) { //100 * 10
+	public void createEObjects(int maxNumber) {
 		int currentDepth;
 		List<EObject> parentsInThisDepth;
 		if (!configuration.isDoNotGenerateRoot()) {
@@ -135,7 +135,6 @@ public abstract class AbstractModelMutator {
 			// for all parent EObjects in this depth
 			List<EObject> parentsInTheNextDepth = new ArrayList<EObject>();
 			for (EObject nextParentEObject : parentsInThisDepth) {
-				//ModelMutatorUtil.setEObjectAttributes(nextParentEObject, configuration.getRandom(), configuration.getExceptionLog(), configuration.isIgnoreAndLog());
 				List<EObject> children = createEObjects(nextParentEObject, currentDepth==0 && configuration.isAllElementsOnRoot(), maxNumber);
 				// will the just created EObjects have children?
 				parentsInTheNextDepth.addAll(children);
@@ -206,7 +205,7 @@ public abstract class AbstractModelMutator {
 		return result;
 	}	
 
-	public void deleteEObjects(int maxNumber) { //100 * 10
+	public void deleteEObjects(int maxNumber) {
 		int currentDepth;
 		List<EObject> parentsInThisDepth;
 		if (!configuration.isDoNotGenerateRoot()) {
@@ -222,7 +221,6 @@ public abstract class AbstractModelMutator {
 		while (currentDepth < configuration.getDepth()) {
 			// for all parent EObjects in this depth
 			for (EObject nextParentEObject : parentsInThisDepth) {
-				//ModelMutatorUtil.setEObjectAttributes(nextParentEObject, configuration.getRandom(), configuration.getExceptionLog(), configuration.isIgnoreAndLog());
 				maxNumber -= deleteEObjects(nextParentEObject, maxNumber);
 				if (maxNumber <= 0) {
 					return;
@@ -240,7 +238,7 @@ public abstract class AbstractModelMutator {
 	}
 	
 	/**
-	 * Delete  
+	 * Delete child EObjects of the given parent
 	 * 
 	 * @param parentEObject
 	 *            the EObject to delete children from
@@ -266,7 +264,7 @@ public abstract class AbstractModelMutator {
 		return toDelete.size();
 	}
 	
-	public void changeContainmentReferences(int maxNumber) { //100 * 10
+	public void changeContainmentReferences(int maxNumber) {
 		int currentDepth;
 		List<EObject> parentsInThisDepth;
 		if (!configuration.isDoNotGenerateRoot()) {
@@ -281,6 +279,7 @@ public abstract class AbstractModelMutator {
 		// Use a breadth-first search (BFS) to go through all children/containments
 		while (currentDepth < configuration.getDepth()) {
 			if (parentsInThisDepth.size() > 1) {
+				//build a map of containment EObjects for better performance
 				Map<EObject, Map<EReference, List<EObject>>> allContainments = new LinkedHashMap<EObject, Map<EReference, List<EObject>>>();
 				for (EObject parentEObject : parentsInThisDepth) {
 					allContainments.put(parentEObject, ModelMutatorUtil.getCurrentContainments(parentEObject));
@@ -305,7 +304,7 @@ public abstract class AbstractModelMutator {
 		}		
 	}
 	
-	public int changeContainmentReferences(EObject parentEObject, Map<EObject, Map<EReference, List<EObject>>> allContainments, int maxNumber) {
+	protected int changeContainmentReferences(EObject parentEObject, Map<EObject, Map<EReference, List<EObject>>> allContainments, int maxNumber) {
 		Map<EReference, List<EObject>> currentContainments = allContainments.get(parentEObject);
 		List<EObject> parentsInThisDepth = new ArrayList<EObject>(allContainments.keySet());
 
@@ -334,16 +333,11 @@ public abstract class AbstractModelMutator {
 			}
 			
 			if (parentEObject.eIsSet(reference)) {
-				//check whether to delete or not
+				//check whether to change reference or not
 				if(configuration.getRandom().nextBoolean()){
-//					int dstParentIndex = configuration.getRandom().nextInt(parentsInThisDepth.size());
-//					EObject dstParentEObject = parentsInThisDepth.get(dstParentIndex);
+					//find destination parent, where objects will be moved
 					Collections.shuffle(parentsInThisDepth, configuration.getRandom());
 					EObject dstParentEObject = null;
-//					int upperBound = Integer.MAX_VALUE;
-//					if (reference.getUpperBound()!=EReference.UNBOUNDED_MULTIPLICITY && reference.getUpperBound()!=EReference.UNSPECIFIED_MULTIPLICITY) {
-//						upperBound = reference.getUpperBound();
-//					}
 					for (EObject curEObject : parentsInThisDepth) {
 						if (!curEObject.equals(parentEObject) && parentEClass.isSuperTypeOf(curEObject.eClass())) {
 							dstParentEObject = curEObject;
@@ -357,113 +351,36 @@ public abstract class AbstractModelMutator {
 					//do different stuff, depending on reference type
 					if(reference.isMany()){
 						List<EObject> toMove=new ArrayList<EObject>();
+//						EList<EObject> srcList = (EList<EObject>)parentEObject.eGet(reference);
 						//check whether to delete references randomly or all at once 
 						if(configuration.getRandom().nextBoolean()){
-							for(EObject refObj:(EList<EObject>)parentEObject.eGet(reference)){
+							for(EObject refObj : srcList){
 								//check whether to delete this reference
 								if(configuration.getRandom().nextBoolean()){
 									toMove.add(refObj);
-									if (++numRefMoved == maxNumber) {
-										break;
-									}
 								}
 							}
 						}
 						else{
-							toMove.addAll((EList<EObject>)parentEObject.eGet(reference));
-							numRefMoved++;
+							toMove.addAll(srcList);
 						}
-//						ModelMutatorUtil.removePerCommand(eObject, reference, toDelte, configuration.getExceptionLog(), configuration.isIgnoreAndLog());
+//						ModelMutatorUtil.removePerCommand(parentEObject, reference, toMove, configuration.getExceptionLog(), configuration.isIgnoreAndLog());
 						ModelMutatorUtil.addPerCommand(dstParentEObject, reference, toMove,
 							configuration.getExceptionLog(), configuration.isIgnoreAndLog());
 					}
 					else {
-						EObject child = (EObject)parentEObject.eGet(reference);
+//						EObject child = (EObject)parentEObject.eGet(reference);
+						EObject child = srcList.get(0);
 						ModelMutatorUtil.setPerCommand(dstParentEObject, reference, child,
 							configuration.getExceptionLog(), configuration.isIgnoreAndLog());
-						numRefMoved++;
 					}
-					if (numRefMoved >= maxNumber) {
+					if (++numRefMoved >= maxNumber) {
 						return numRefMoved;
 					}					
 				}
 			}
-			
-//			for (EObject child : parentEObject.eContents()) {
-//				if (configuration.getRandom().nextBoolean()) {
-//					int dstParentIndex = configuration.getRandom().nextInt(parentsInThisDepth.size());
-//					EObject dstParentEObject = parentsInThisDepth.get(dstParentIndex);
-//					int upperBound = Integer.MAX_VALUE;
-//					if (reference.getUpperBound()!=EReference.UNBOUNDED_MULTIPLICITY && reference.getUpperBound()!=EReference.UNSPECIFIED_MULTIPLICITY) {
-//						upperBound = reference.getUpperBound();
-//					}
-//					
-//					if (dstParentEObject.equals(parentEObject)
-//						|| !ModelMutatorUtil.isValid(reference, dstParentEObject, configuration.getExceptionLog(),
-//							configuration.isIgnoreAndLog())) {
-//						continue;
-//					}
-//				
-//					List<EObject> dstList = allContainments.get(dstParentEObject).get(reference);
-//					if (dstList == null) {
-//						dstList = new ArrayList<EObject>();
-//						allContainments.get(dstParentEObject).put(reference, dstList);
-//					}
-//					
-//					if (dstList.size() >= upperBound) {
-//						continue;
-//					}
-//					
-//					srcList.remove(child);
-//					dstList.add(child);
-//					numRefMoved++;
-//					if (numRefMoved == maxNumber) {
-//						return numRefMoved;
-//					}
-//				}
-//			}
 		}
 		return numRefMoved;
-	}
-
-//	public void changeContainmentReferences(int maxNumber) {
-//		EObject rootObject = configuration.getRootEObject();
-//		Map<EClass, List<EObject>> allObjectsByEClass = ModelMutatorUtil.getAllClassesAndObjects(rootObject);
-//		for (List<EObject> list : allObjectsByEClass.values()) {
-//			for (EObject eObject : list) {
-//				maxNumber -= generateContainmentReferences(eObject, allObjectsByEClass, maxNumber);
-//				if (maxNumber <= 0) {
-//					return;
-//				}
-//			}
-//		}
-//	}
-
-	/**
-	 * Generates containment references for an EObject. All
-	 * valid references are set with EObjects generated during the generation
-	 * process.
-	 * 
-	 * @param eObject
-	 *            the EObject to set references for
-	 * @param allObjectsByEClass
-	 *            all possible EObjects that can be referenced, mapped to their
-	 *            EClass
-	 * @param maxNumber
-	 *            maximal number of references to set 
-	 * @see ModelGeneratorHelper#setReference(EObject, EClass, EReference, Map)
-	 */
-	public int generateContainmentReferences(EObject eObject, Map<EClass, List<EObject>> allObjectsByEClass, int maxNumber) {
-		int i = 0;
-		for (EReference reference : ModelMutatorUtil.getValidContainmentReferences(eObject, configuration.getExceptionLog(), configuration.isIgnoreAndLog())) {
-			for (EClass nextReferenceClass : ModelMutatorUtil.getReferenceClasses(reference, allObjectsByEClass.keySet())) {
-				setEObjectReference(eObject, nextReferenceClass, reference, allObjectsByEClass);
-				if (++i == maxNumber) {
-					return i;
-				}
-			}
-		}
-		return i;
 	}
 	
 	/**
@@ -511,7 +428,7 @@ public abstract class AbstractModelMutator {
 	 * @return all children (old and new) as a list
 	 * @see #generateContainments(EObject, EReference, int)
 	 */
-	public List<EObject> generateChildren(EObject parentEObject, boolean generateAllReferences) {
+	protected List<EObject> generateChildren(EObject parentEObject, boolean generateAllReferences) {
 		Map<EReference, List<EObject>> currentContainments = new HashMap<EReference, List<EObject>>();
 		List<EObject> result = new ArrayList<EObject>();
 		List<EObject> toDelete=new ArrayList<EObject>();
@@ -536,7 +453,6 @@ public abstract class AbstractModelMutator {
 		//delete random selected elements
 		for(EObject curChild:toDelete){
 			ModelMutatorUtil.removeFullPerCommand(curChild, configuration.getExceptionLog(), configuration.isIgnoreAndLog());
-
 		}
 //		deleteEObjects(parentEObject, Integer.MAX_VALUE);
 //		changeAttributes(parentEObject, Integer.MAX_VALUE);
@@ -657,7 +573,7 @@ public abstract class AbstractModelMutator {
 	 * @see ModelGeneratorUtil#setPerCommand(EObject, EStructuralFeature,
 	 *      Object, Set, boolean)
 	 */
-	public List<EObject> generateMinContainments(EObject parentEObject, EReference reference, int width) {
+	protected List<EObject> generateMinContainments(EObject parentEObject, EReference reference, int width) {
 		List<EObject> result = new ArrayList<EObject>(width > 0 ? width : 0);
 		for (int i = 0; i < width; i++) {
 			EClass eClass = getValidEClass(reference);
@@ -672,7 +588,7 @@ public abstract class AbstractModelMutator {
 		return result;
 	}
 
-	public EObject generateElement(EObject parentEObject, EClass eClass, EReference reference) {
+	protected EObject generateElement(EObject parentEObject, EClass eClass, EReference reference) {
 		// create child and add it to parentEObject
 		// Old version which used another method:
 		//EObject newChild = setContainment(parentEObject, eClass, reference);
@@ -696,7 +612,7 @@ public abstract class AbstractModelMutator {
 	 * @return
 	 * 			a valid eClass for the eReference
 	 */
-	public EClass getValidEClass(EReference eReference) {
+	protected EClass getValidEClass(EReference eReference) {
 		List<EClass> allEClasses = new ArrayList<EClass>(ModelMutatorUtil.getAllEContainments(eReference));
 
 		// only allow EClasses that appear in the specified EPackage
@@ -752,7 +668,7 @@ public abstract class AbstractModelMutator {
 	 *            maximal number of references to set 
 	 * @see ModelGeneratorHelper#setReference(EObject, EClass, EReference, Map)
 	 */
-	public int generateReferences(EObject eObject, Map<EClass, List<EObject>> allObjectsByEClass, int maxNumber) {
+	protected int generateReferences(EObject eObject, Map<EClass, List<EObject>> allObjectsByEClass, int maxNumber) {
 		int i = 0;
 		for (EReference reference : ModelMutatorUtil.getValidCrossReferences(eObject, configuration.getExceptionLog(), configuration.isIgnoreAndLog())) {
 			for (EClass nextReferenceClass : ModelMutatorUtil.getReferenceClasses(reference, allObjectsByEClass.keySet())) {
@@ -780,7 +696,8 @@ public abstract class AbstractModelMutator {
 	 * @see ModelGeneratorUtil#setReference(EObject, EClass, EReference, Random,
 	 *      Set, boolean, Map)
 	 */
-	public void setEObjectReference(EObject eObject, EClass referenceClass, EReference reference,
+	@SuppressWarnings("unchecked")
+	protected void setEObjectReference(EObject eObject, EClass referenceClass, EReference reference,
 		Map<EClass, List<EObject>> allEObjects) {
 		
 		// Delete already set references (only applies when changing a model)

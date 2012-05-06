@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Model Mutator
-Bundle-SymbolicName: org.eclipse.emf.modelmutator
+Bundle-SymbolicName: org.eclipse.emf.emfstore.modelmutator
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.emf.emfstore.modelmutator.Activator
 Bundle-Vendor: edu.tum.bruegge.epd.modelmutator

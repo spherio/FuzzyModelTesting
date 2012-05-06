@@ -60,6 +60,7 @@ import org.eclipse.emf.emfstore.modelmutator.intern.attribute.AttributeSetterESt
  * @author Eugen Neufeld
  * @author Stephan Köhler
  * @author Philip Achenbach
+ * @author Dmitry Litvinov
  */
 public class ModelMutatorUtil {
 
@@ -531,16 +532,14 @@ public class ModelMutatorUtil {
 	 */
 	public static void removeFullPerCommand(final EObject eObject,
 			Set<RuntimeException> exceptionLog, boolean ignoreAndLog) {
-//		EditingDomain domain = AdapterFactoryEditingDomain.getEditingDomainFor(eObject);
 		List<EObject> toDelete=new ArrayList<EObject>(1);
 		toDelete.add(eObject);
-			try {
-//				new DeleteCommand(domain,toDelete ).execute();
-				EcoreUtil.delete(eObject, true);
-			} catch(RuntimeException e){
-				handle(e, exceptionLog, ignoreAndLog);
-			}
+		try {
+			EcoreUtil.delete(eObject, true);
+		} catch(RuntimeException e){
+			handle(e, exceptionLog, ignoreAndLog);
 		}
+	}
 	
 	/**
 	 * Sets all possible attributes of known types to random values using
