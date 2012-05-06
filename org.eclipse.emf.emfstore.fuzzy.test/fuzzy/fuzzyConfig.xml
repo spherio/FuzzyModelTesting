@@ -2,5 +2,5 @@
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:org.eclipse.emf.emfstore.fuzzy.config="http://org/eclipse/emf/emfstore/fuzzy/config">
   <org.eclipse.emf.emfstore.fuzzy.config:TestConfig seed="1" nsURI="http://org/eclipse/example/bowling" count="1" testClass="org.eclipse.emf.emfstore.fuzzy.test.MyTest" id="_sLQasYvPEeG1B5HDFm-I-w"/>
   <org.eclipse.emf.emfstore.fuzzy.config:TestConfig seed="1" nsURI="http://org/eclipse/example/bowling" count="1" testClass="org.eclipse.emf.emfstore.fuzzy.test.SecondTest" id="_C11qUIvSEeGC3oFJZ-5VgQ"/>
-  <org.eclipse.emf.emfstore.fuzzy.config:TestConfig seed="1" nsURI="http://org/eclipse/example/bowling" count="1" testClass="org.eclipse.emf.emfstore.fuzzy.test.ChangeTrackingTest" id="_Wxy6kJRmEeGD4dvjI0dpEw"/>
+  <org.eclipse.emf.emfstore.fuzzy.config:TestConfig seed="1" nsURI="http://org/eclipse/example/bowling" count="10000" testClass="org.eclipse.emf.emfstore.fuzzy.test.ChangeTrackingTest" id="_Wxy6kJRmEeGD4dvjI0dpEw"/>
 </xmi:XMI>

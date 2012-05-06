@@ -47,4 +47,9 @@ public class IntDataProvider implements FuzzyDataProvider<Integer> {
 	public List<Test> getTestsToRun() {
 		return null;
 	}
+
+	@Override
+	public Util getUtil() {
+		return null;
+	}
 }

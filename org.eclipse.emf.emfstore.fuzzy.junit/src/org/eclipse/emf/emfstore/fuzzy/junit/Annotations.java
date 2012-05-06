@@ -18,6 +18,16 @@ public final class Annotations {
 	public @interface Data {}
 	
 	/**
+	 * Annotations to declare the field for the {@link Util}.
+	 * 
+	 * @author Julian Sommerfeldt
+	 *
+	 */
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target({ElementType.FIELD})
+	public @interface Util {}
+		
+	/**
 	 * An annotation to set the {@link FuzzyDataProvider} for the {@link FuzzyRunner}.
 	 * 
 	 * @author Julian Sommerfeldt

@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.eclipse.emf.emfstore.fuzzy.junit.Annotations.Data;
 import org.eclipse.emf.emfstore.fuzzy.junit.Annotations.DataProvider;
+import org.eclipse.emf.emfstore.fuzzy.junit.Annotations.Util;
 import org.junit.runner.RunWith;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunListener;
@@ -41,9 +42,7 @@ import org.junit.runners.model.FrameworkField;
 public class FuzzyRunner extends Suite {
 	
 	private ArrayList<Runner> runners = new ArrayList<Runner>();
-	
-	private FrameworkField dataField;
-	
+		
 	private FuzzyDataProvider<?> dataProvider;
 	
 	private Class<?> defaultDataProviderClass = IntDataProvider.class;
@@ -58,9 +57,11 @@ public class FuzzyRunner extends Suite {
 		dataProvider = getDataProvider();
 		dataProvider.setTestClass(getTestClass());
 		dataProvider.init();
-		dataField = getModelField();	
+		FrameworkField dataField = getDataField();	
+		FrameworkField utilField = getUtilField();
+		org.eclipse.emf.emfstore.fuzzy.junit.Util util = dataProvider.getUtil();
 		for (int i = 0; i < dataProvider.size(); i++) {
-			FuzzyTestClassRunner runner = new FuzzyTestClassRunner(clazz, dataProvider, dataField, i + 1);
+			FuzzyTestClassRunner runner = new FuzzyTestClassRunner(clazz, dataProvider, dataField, utilField, util, i + 1);
 			if(runner.getChildren().size() > 0){
 				runners.add(runner);
 			}
@@ -85,11 +86,15 @@ public class FuzzyRunner extends Suite {
 	}
 	
 	/**
-	 * @return The field annotated with {@link Data}.
-	 * @throws Exception If there is not exact one fitting field.
+	 * @return The field annotated with {@link Util}.
+	 * @throws Exception If there is are more than one fitting fields.
 	 */
-	private FrameworkField getModelField() throws Exception {
-		List<FrameworkField> fields = getTestClass().getAnnotatedFields(Data.class);
+	private FrameworkField getUtilField() throws Exception {
+		return getSingleStaticFrameworkField(Util.class);
+	}
+	
+	private FrameworkField getSingleStaticFrameworkField(Class<? extends Annotation> annotation) throws Exception{
+		List<FrameworkField> fields = getTestClass().getAnnotatedFields(annotation);
 		
 		// Check if there are more than one Data field in the class
 		if(fields.size() > 1){
@@ -105,8 +110,21 @@ public class FuzzyRunner extends Suite {
 			}
 		}
 		
-		// if there is no fitting field tell to user
-		throw new Exception("No non-static model field anntoted with " + Data.class.getSimpleName() + " in class " + getTestClass().getName());
+		return null;
+	}
+	
+	/**
+	 * @return The field annotated with {@link Data}.
+	 * @throws Exception If there is not exact one fitting field.
+	 */
+	private FrameworkField getDataField() throws Exception {
+		FrameworkField field = getSingleStaticFrameworkField(Data.class);
+		
+		if(field == null) {
+			throw new Exception("No non-static model field anntoted with " + Data.class.getSimpleName() + " in class " + getTestClass().getName());
+		}
+		
+		return field;
 	}
 	
 	/**

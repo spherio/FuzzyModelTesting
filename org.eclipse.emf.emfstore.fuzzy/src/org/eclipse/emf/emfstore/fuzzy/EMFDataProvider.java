@@ -20,6 +20,7 @@ import org.eclipse.emf.emfstore.fuzzy.config.TestRun;
 import org.eclipse.emf.emfstore.fuzzy.diff.HudsonTestRunProvider;
 import org.eclipse.emf.emfstore.fuzzy.junit.FuzzyDataProvider;
 import org.eclipse.emf.emfstore.fuzzy.junit.Test;
+import org.eclipse.emf.emfstore.fuzzy.junit.Util;
 import org.eclipse.emf.emfstore.modelmutator.api.ModelMutator;
 import org.eclipse.emf.emfstore.modelmutator.api.ModelMutatorConfiguration;
 import org.eclipse.emf.emfstore.modelmutator.api.ModelMutatorUtil;
@@ -193,6 +194,10 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 		return seedCount;
 	}
 	
+	public EPackage getEPackage(){
+		return ePackage;
+	}
+	
 	private void fillProperties(){		
 		String filterTests = System.getProperty("filterTests");
 		if(filterTests == null){
@@ -201,5 +206,10 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 			this.filterTests = Boolean.parseBoolean(filterTests);
 		}
 		configFile = FuzzyUtil.getProperty(PROP_EMFDATAPROVIDER + PROP_CONFIGS_FILE, FuzzyUtil.TEST_CONFIG_PATH);	
+	}
+
+	@Override
+	public Util getUtil() {
+		return new MutateUtil(this);
 	}
 }

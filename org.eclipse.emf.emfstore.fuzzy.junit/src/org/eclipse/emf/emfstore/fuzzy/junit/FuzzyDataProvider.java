@@ -51,4 +51,9 @@ public interface FuzzyDataProvider<T> {
 	 * @return A list of {@link Test}s to specify, which tests the {@link FuzzyRunner} should run. <code>null</code> means run all tests.
 	 */
 	public List<Test> getTestsToRun();
+	
+	/**
+	 * @return The {@link Util} for this {@link FuzzyDataProvider}. <code>null</code> permitted.
+	 */
+	public Util getUtil();
 }
