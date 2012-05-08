@@ -1,5 +1,7 @@
 package org.eclipse.emf.emfstore.fuzzy.test;
 
+import java.io.IOException;
+
 import junit.framework.Assert;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -26,20 +28,19 @@ public class ChangeTrackingTest {
 	private MutateUtil util;
 	
 	@Test
-	public void changeTrackingTest(){
+	public void changeTrackingTest() throws IOException{
 		projectSpace.getOperations().clear();
-		ProjectSpaceImpl copy = (ProjectSpaceImpl) EcoreUtil.copy(projectSpace);	
 		
-		copy.setProject(ModelUtil.clone(projectSpace.getProject()));
+		final ProjectSpaceImpl copy = EcoreUtil.copy(projectSpace);	
+		
+		copy.setProject( ModelUtil.clone(projectSpace.getProject()) );
 
 		util.mutate(projectSpace.getProject());
 						
 		for (AbstractOperation op : projectSpace.getOperations()) {
 			op.apply(copy.getProject());			
 		}
-
-		projectSpace.getOperations().clear();
 		
-		Assert.assertTrue(ModelUtil.areEqual(projectSpace, copy));
+		Assert.assertTrue(ModelUtil.areEqual(projectSpace.getProject(), copy.getProject()));
 	}
 }

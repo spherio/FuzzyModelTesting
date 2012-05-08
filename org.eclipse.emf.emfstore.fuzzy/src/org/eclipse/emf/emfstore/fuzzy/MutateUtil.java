@@ -8,6 +8,8 @@ import org.eclipse.emf.emfstore.modelmutator.api.ModelMutator;
 import org.eclipse.emf.emfstore.modelmutator.api.ModelMutatorConfiguration;
 
 public class MutateUtil extends Util {
+	
+	public static final long STANDARD_SEED = 5;
 
 	private EMFDataProvider dataProvider;
 	
@@ -20,11 +22,13 @@ public class MutateUtil extends Util {
 	}	
 	
 	public void mutate(EObject root){
-		mutate(root, 5);
+		mutate(root, STANDARD_SEED);
 	}
 	
 	public void mutate(EObject root, long seed){
-		mutate(new ModelMutatorConfiguration(getEPackage(), root, seed));
+		ModelMutatorConfiguration mmc = new ModelMutatorConfiguration(getEPackage(), root, seed);
+		mmc.seteStructuralFeaturesToIgnore(EMFDataProvider.getFeaturesToIgnore());
+		mutate(mmc);
 	}
 	
 	public void mutate(final ModelMutatorConfiguration mmc){

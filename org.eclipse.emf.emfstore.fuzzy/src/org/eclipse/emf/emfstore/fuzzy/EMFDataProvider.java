@@ -3,6 +3,7 @@ package org.eclipse.emf.emfstore.fuzzy;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -10,8 +11,10 @@ import java.util.Random;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.emfstore.client.model.ProjectSpace;
+import org.eclipse.emf.emfstore.common.model.ModelPackage;
 import org.eclipse.emf.emfstore.fuzzy.config.ConfigFactory;
 import org.eclipse.emf.emfstore.fuzzy.config.TestConfig;
 import org.eclipse.emf.emfstore.fuzzy.config.TestDiff;
@@ -60,6 +63,8 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 	public static final String PROP_EMFDATAPROVIDER = ".emfdataprovider";
 		
 	public static final String PROP_CONFIGS_FILE = ".configsFile";
+	
+	private static Collection<EStructuralFeature> featuresToIgnore;
 	
 	@Override
 	public void init(){
@@ -120,7 +125,8 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 		
 		// create a new configuration for the next model
 		ModelMutatorConfiguration mmc = new ModelMutatorConfiguration(ePackage,
-				projectSpace.getProject(), random.nextLong());
+				projectSpace.getProject(), random.nextLong());		
+		mmc.seteStructuralFeaturesToIgnore(getFeaturesToIgnore());
 		
 		// generate the model
 		ModelMutator.generateModel(mmc);
@@ -211,5 +217,13 @@ public class EMFDataProvider implements FuzzyDataProvider<EObject> {
 	@Override
 	public Util getUtil() {
 		return new MutateUtil(this);
+	}
+	
+	public static Collection<EStructuralFeature> getFeaturesToIgnore(){
+		if(featuresToIgnore == null){
+			featuresToIgnore = new ArrayList<>();
+			featuresToIgnore.add(ModelPackage.eINSTANCE.getProject_CutElements());
+		}
+		return featuresToIgnore;
 	}
 }
